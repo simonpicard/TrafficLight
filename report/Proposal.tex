@@ -39,11 +39,11 @@
   \end{center}
 \end{wrapfigure}
 \paragraph{}
-The goal of our project is to design a controller for trafic lights at a crossing junction which have push button to allow pedestrian to notify that they are waiting to cross, and ultimately let them do so.
-There will be detectors on the road to check whether or not cars are waiting at the lights to assign some kind of priorities, while still taking into account the pedestrians.
+The goal of our project is to design a controller for trafic lights at a crossing junction. The system will have push buttons for pedestrians to notify that they want to cross.
+There will also be detectors to inform the controller on how many cars are waiting at the red lights to assign some kind of priorities, while still taking into account the pedestrians.
 
 \paragraph{}
-Because we are a group of 6, we choose to work on a four-way instead of a simple junction. As we can see on the right, we have four crosswalks and two pairs of traffic lights to orchestrate. Ultimately, we should come up with a solution to avoid unwanted situation which are explained below. The pink cameras represent cars detectors.
+Because we are a group of 6, we choosed to work on a four-way instead of a simple junction. As we can see on the right, we have four crosswalks and two pairs of traffic lights to orchestrate. The pink cameras represent cars detectors. Ultimately, we should come up with a solution to avoid unwanted situations which are explained below.
 
 \paragraph{}
 To be noted that we do the project conjointly with the course of embedded system.\\ 
@@ -52,9 +52,9 @@ To be noted that we do the project conjointly with the course of embedded system
 
 \subsection{Why using model checking?}
 \paragraph{}
-In such a system, lives are at stake. If the lights get mixed up, we could easily reach a state where pedestrians and cars cross the road at the same, or even in a situation where head-on collision could happen. With these information, it is easy to see why it is important to formally check our model to remove the chance of reaching problematic states.
+In such a system, lives are at stake. If the lights get mixed up, we could easily reach a state where pedestrians and cars cross the road at the same time, or even in a situation where head-on collision could happen. This is why it is important to formally check our model and remove the chances of reaching problematic states.
 \paragraph{}
-Another interesting reason as of why our project could benefit from model checking it the real-time dimension. Indeed, a clogged junction increases the risk of accident (and also affects people's moods). Designing a controller to allow a fluid circulation can also make commuting safer.
+Another interesting reason as of why our project could benefit from model checking is the real-time dimension. Indeed, a clogged junction increases the risk of accident (and also affects people's moods). Designing a controller to allow a fluid circulation could make commuting safer.
 
 
 \end{document}
