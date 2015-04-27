@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.4.26)  27 APR 2015 23:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.4.26)  27 APR 2015 23:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -636,14 +636,14 @@ Here is how much of TeX's memory you used:
  9423 multiletter control sequences out of 15000+600000
  14350 words of font info for 40 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 40i,6n,46p,366b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 40i,6n,46p,365b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/nicolas/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm10
 00.600pk> </home/nicolas/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk>
  </home/nicolas/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/n
 icolas/.texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1200.600pk> </home/nicolas/.t
 exmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/nicolas/.texmf-var/
 fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk>
-Output written on Proposal.pdf (1 page, 105308 bytes).
+Output written on Proposal.pdf (1 page, 105313 bytes).
 PDF statistics:
  176 PDF objects out of 1000 (max. 8388607)
  29 compressed objects within 1 object stream
