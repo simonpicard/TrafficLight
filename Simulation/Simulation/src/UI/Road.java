@@ -8,9 +8,10 @@ public class Road {
 	private LeftLight leftTL;
 	private RightLight rightTL;
 	private UpLight upTL;
-	private int orientation;
+	private Direction orientation;
+	private Lane lane;
 	
-	public Road(int orientation) throws SlickException{
+	public Road(Direction orientation) throws SlickException{
 		this.orientation = orientation;
 		init();
 	}
@@ -20,6 +21,7 @@ public class Road {
 		leftTL = new LeftLight(5, 100, orientation);
 		upTL = new UpLight(44, 100, orientation);
 		rightTL = new RightLight(83, 100, orientation);
+		lane = new Lane(orientation);
 	}
 	
 	public void draw(){
@@ -27,6 +29,11 @@ public class Road {
 		leftTL.draw();
 		upTL.draw();
 		rightTL.draw();
+		lane.draw();
+	}
+	
+	public void update(){
+		lane.update();
 	}
 	
 	public void setLeft(LightEnum le){
@@ -43,6 +50,14 @@ public class Road {
 	
 	public void setPedestrian(LightEnum le){
 		pedestrianTL.setState(le);
+	}
+	
+	public void addCar(Way lane) throws SlickException{
+		this.lane.addCar(lane);
+	}
+	
+	public void removeCar(Way lane) throws SlickException{
+		this.lane.removeCar(lane);
 	}
 
 }

@@ -10,7 +10,7 @@ public abstract class TrafficLight {
 	protected String redPath;
 	protected int x;
 	protected int y;
-	protected int orientation;
+	protected Direction orientation;
 	protected Image greenLight;
 	protected Image orangeLight;
 	protected Image redLight;
@@ -18,7 +18,7 @@ public abstract class TrafficLight {
 	private boolean t = true;
 	
 	
-	public TrafficLight(int x, int y, int orientation) throws SlickException {
+	public TrafficLight(int x, int y, Direction orientation) throws SlickException {
 		super();
 		setPaths();
 		int[] pos = Util.adjustPos(x,y,orientation);
@@ -56,10 +56,10 @@ public abstract class TrafficLight {
 		this.state = state;
 	}
 
-	public int getOrientation() {
+	public Direction getOrientation() {
 		return orientation;
 	}
-	private void setOrientation(int orientation) {
+	private void setOrientation(Direction orientation) {
 		this.orientation = orientation;
 	}
 
@@ -76,9 +76,9 @@ public abstract class TrafficLight {
 		redLight.setCenterOfRotation(0, 0);
 		greenLight.setCenterOfRotation(0, 0);
 		orangeLight.setCenterOfRotation(0, 0);
-		redLight.setRotation(orientation*90);
-		greenLight.setRotation(orientation*90);
-		orangeLight.setRotation(orientation*90);
+		redLight.setRotation(orientation.ordinal()*90);
+		greenLight.setRotation(orientation.ordinal()*90);
+		orangeLight.setRotation(orientation.ordinal()*90);
 	}
 
 	public void draw() {

@@ -7,7 +7,7 @@ public class PedestrianLight {
 
 	private int x;
 	private int y;
-	private int orientation;
+	private Direction orientation;
 	private String redPath = "images/pietonRouge.png";
 	private String greenPath = "images/pietonVert.png";
 	private Image redLight;
@@ -16,7 +16,7 @@ public class PedestrianLight {
 	private Boolean t = true;
 	
 	
-	public PedestrianLight(int x, int y, int orientation) throws SlickException {
+	public PedestrianLight(int x, int y, Direction orientation) throws SlickException {
 		super();
 		int[] pos = Util.adjustPos(x,y,orientation);
 		this.x = pos[0];
@@ -47,10 +47,10 @@ public class PedestrianLight {
 		this.state = state;
 	}
 
-	public int getOrientation() {
+	public Direction getOrientation() {
 		return orientation;
 	}
-	public void setOrientation(int orientation) {
+	public void setOrientation(Direction orientation) {
 		this.orientation = orientation;
 	}
 
@@ -73,7 +73,7 @@ public class PedestrianLight {
 	public void rotateLights(){
 		redLight.setCenterOfRotation(0, 0);
 		greenLight.setCenterOfRotation(0, 0);
-		redLight.rotate(orientation*90);
-		greenLight.rotate(orientation*90);
+		redLight.rotate(orientation.ordinal()*90);
+		greenLight.rotate(orientation.ordinal()*90);
 	}
 }

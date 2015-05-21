@@ -2,25 +2,24 @@ package UI;
 
 public class Util {
 	
-	public static int[] adjustPos(int x, int y, int orientation){
+	public static int[] adjustPos(int x, int y, Direction orientation){
 		int temp;
-		int height = 0;
-		int width = 0;
+		//System.out.println(orientation);
 		switch (orientation){
-		case 0:
+		case NORTH:
 			x += 400;
 			y += 400;
 			break;
-		case 1:
+		case WEST:
 			temp = y;
 			y = 400+x;
 			x = 400-temp;
 			break;
-		case 2:
+		case SOUTH:
 			y = 400-y;
 			x = 400-x;
 			break;
-		case 3:
+		case EAST:
 			temp = y;
 			y = 400-x;
 			x = 400+temp;
