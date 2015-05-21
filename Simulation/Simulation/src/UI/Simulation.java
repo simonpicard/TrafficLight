@@ -63,6 +63,8 @@ public class Simulation extends BasicGame {
 			case Input.KEY_Q: roads.get(o).removeCar(Way.LEFT); break;
 			case Input.KEY_S: roads.get(o).removeCar(Way.MIDDLE); break;
 			case Input.KEY_D: roads.get(o).removeCar(Way.RIGHT); break;
+			case Input.KEY_R: roads.get(o).addPedestrian(Way.LEFT); break;
+			case Input.KEY_T: roads.get(o).addPedestrian(Way.RIGHT); break;
 			case Input.KEY_W: o++; o %= 4; break;
 			}
 		} catch (SlickException e) {

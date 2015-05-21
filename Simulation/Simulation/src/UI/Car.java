@@ -12,19 +12,17 @@ public class Car {
 	private int ax; //absolute x;
 	private int ay;
 	private Direction orientation;
-	private int lane;
 	private String[] path = {"images/car2.png", "images/car3.png", "images/car4.png", "images/car5.png", "images/car6.png", "images/car7.png"};
 	private Image carImage;
 	private Boolean t = true;
 	private Boolean turned = false;
 	
-	public Car(int x, int y, Direction orientation, int lane) throws SlickException {
+	public Car(int x, int y, Direction orientation) throws SlickException {
 		super();
 		this.x = x;
 		this.y = y;
 		this.orientation = orientation;
 		setAbsolute();
-		this.lane = lane;
 		Random r = new Random();
 		carImage = new Image(path[r.nextInt(6)]);
 	}
@@ -52,12 +50,6 @@ public class Car {
 	}
 	public void setOrientation(Direction orientation) {
 		this.orientation = orientation;
-	}
-	public int getLane() {
-		return lane;
-	}
-	public void setLane(int lane) {
-		this.lane = lane;
 	}
 	
 	public void up(){

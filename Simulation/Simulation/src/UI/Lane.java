@@ -33,15 +33,15 @@ public class Lane {
 	public void addCar(Way lane) throws SlickException{
 		switch(lane){
 		case LEFT:
-			leftCars.add(new Car(4, 400, orientation, lane.ordinal()));
+			leftCars.add(new Car(4, 400, orientation));
 			nbLeft ++;
 			break;
 		case MIDDLE:
-			upCars.add(new Car(43, 400, orientation, lane.ordinal()));
+			upCars.add(new Car(43, 400, orientation));
 			nbUp++;
 			break;
 		case RIGHT:
-			rightCars.add(new Car(83, 400, orientation, lane.ordinal()));
+			rightCars.add(new Car(83, 400, orientation));
 			nbRight++;
 			break;
 		}
