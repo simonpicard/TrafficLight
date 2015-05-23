@@ -9,7 +9,7 @@ public class Lane {
 	private int nbLeft;
 	private int nbUp;
 	private int nbRight;
-	private Direction orientation;
+	private Orientation orientation;
 	private int leavingLeft;
 	private int leavingUp;
 	private int leavingRight;
@@ -20,7 +20,7 @@ public class Lane {
 	
 	private int carSize = 30; //square
 	
-	public Lane(Direction orientation){
+	public Lane(Orientation orientation){
 		this.orientation = orientation;
 		nbLeft = 0;
 		nbUp = 0;
@@ -30,13 +30,13 @@ public class Lane {
 		leavingRight = 0;
 	}
 	
-	public void addCar(Way lane) throws SlickException{
+	public void addCar(Direction lane) throws SlickException{
 		switch(lane){
 		case LEFT:
 			leftCars.add(new Car(4, 400, orientation));
 			nbLeft ++;
 			break;
-		case MIDDLE:
+		case UP:
 			upCars.add(new Car(43, 400, orientation));
 			nbUp++;
 			break;
@@ -47,7 +47,7 @@ public class Lane {
 		}
 	}
 	
-	public void removeCar(Way lane) throws SlickException{
+	public void removeCar(Direction lane) throws SlickException{
 		switch(lane){
 		case LEFT:
 			if (nbLeft > 0){
@@ -55,7 +55,7 @@ public class Lane {
 				leavingLeft++;
 			}
 			break;
-		case MIDDLE:
+		case UP:
 			if (nbUp > 0){
 				nbUp--;
 				leavingUp++;

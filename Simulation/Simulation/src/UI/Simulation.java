@@ -33,10 +33,10 @@ public class Simulation extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		background = new Image("images/road.png");
-		roads.add(new Road(Direction.NORTH));
-		roads.add(new Road(Direction.WEST));
-		roads.add(new Road(Direction.SOUTH));
-		roads.add(new Road(Direction.EAST));
+		roads.add(new Road(Orientation.NORTH));
+		roads.add(new Road(Orientation.WEST));
+		roads.add(new Road(Orientation.SOUTH));
+		roads.add(new Road(Orientation.EAST));
 		setSpeed(10);
 	}
 
@@ -52,19 +52,28 @@ public class Simulation extends BasicGame {
 
 	@Override
 	public void keyReleased(int key, char c) {
+		switch (key) {
+		case Input.KEY_ESCAPE:
+			container.exit();
+			break;
+		}
+
+	}
+
+	@Override
+	public void keyPressed(int key, char c) {
 		try {
 			switch (key) {
-			case Input.KEY_ESCAPE:
-				container.exit();
-				break;
-			case Input.KEY_A: roads.get(o).addCar(Way.LEFT); break;
-			case Input.KEY_Z: roads.get(o).addCar(Way.MIDDLE); break;
-			case Input.KEY_E: roads.get(o).addCar(Way.RIGHT); break;
-			case Input.KEY_Q: roads.get(o).removeCar(Way.LEFT); break;
-			case Input.KEY_S: roads.get(o).removeCar(Way.MIDDLE); break;
-			case Input.KEY_D: roads.get(o).removeCar(Way.RIGHT); break;
-			case Input.KEY_R: roads.get(o).addPedestrian(Way.LEFT); break;
-			case Input.KEY_T: roads.get(o).addPedestrian(Way.RIGHT); break;
+			case Input.KEY_A: roads.get(o).addCar(Direction.LEFT); break;
+			case Input.KEY_Z: roads.get(o).addCar(Direction.UP); break;
+			case Input.KEY_E: roads.get(o).addCar(Direction.RIGHT); break;
+			case Input.KEY_Q: roads.get(o).removeCar(Direction.LEFT); break;
+			case Input.KEY_S: roads.get(o).removeCar(Direction.UP); break;
+			case Input.KEY_D: roads.get(o).removeCar(Direction.RIGHT); break;
+			case Input.KEY_R: roads.get(o).addPedestrian(Direction.LEFT); break;
+			case Input.KEY_T: roads.get(o).addPedestrian(Direction.RIGHT); break;
+			case Input.KEY_F: roads.get(o).removePedestrian(Direction.LEFT); break;
+			case Input.KEY_G: roads.get(o).removePedestrian(Direction.RIGHT); break;
 			case Input.KEY_W: o++; o %= 4; break;
 			}
 		} catch (SlickException e) {

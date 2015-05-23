@@ -2,7 +2,7 @@ package UI;
 
 public class Util {
 	
-	public static int[] adjustPos(int x, int y, Direction orientation){
+	public static int[] adjustPos(int x, int y, Orientation orientation){
 		int temp;
 		//System.out.println(orientation);
 		switch (orientation){

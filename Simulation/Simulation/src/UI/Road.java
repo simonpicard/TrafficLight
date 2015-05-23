@@ -8,11 +8,11 @@ public class Road {
 	private LeftLight leftTL;
 	private RightLight rightTL;
 	private UpLight upTL;
-	private Direction orientation;
+	private Orientation orientation;
 	private Lane lane;
 	private Sidewalk sidewalk;
 	
-	public Road(Direction orientation) throws SlickException{
+	public Road(Orientation orientation) throws SlickException{
 		this.orientation = orientation;
 		init();
 	}
@@ -56,19 +56,19 @@ public class Road {
 		pedestrianTL.setState(le);
 	}
 	
-	public void addCar(Way lane) throws SlickException{
+	public void addCar(Direction lane) throws SlickException{
 		this.lane.addCar(lane);
 	}
 	
-	public void removeCar(Way lane) throws SlickException{
+	public void removeCar(Direction lane) throws SlickException{
 		this.lane.removeCar(lane);
 	}
 	
-	public void addPedestrian(Way lane) throws SlickException{
+	public void addPedestrian(Direction lane) throws SlickException{
 		this.sidewalk.addPedestrian(lane);
 	}
 	
-	public void removePedestrian(Way lane) throws SlickException{
+	public void removePedestrian(Direction lane) throws SlickException{
 		this.sidewalk.removePedestrian(lane);
 	}
 

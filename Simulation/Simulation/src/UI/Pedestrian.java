@@ -5,19 +5,20 @@ import org.newdawn.slick.SlickException;
 
 public class Pedestrian {
 
-	private String path = "images/pedestrian.png";
+	private String path = "images/test.png";
 	private Image pedestrianImage;
-	private Direction orientation;
+	private Orientation orientation;
 
 	private int x;
 	private int y;
 	private int ax; // absolute x;
 	private int ay;
+	private int r = 0; // rotation x;
 	private Boolean t1 = true;
 	private Boolean t2 = true;
 	private int turned = 0;
 
-	public Pedestrian(int x, int y, Direction orientation)
+	public Pedestrian(int x, int y, Orientation orientation)
 			throws SlickException {
 		super();
 		this.orientation = orientation;
@@ -31,12 +32,10 @@ public class Pedestrian {
 		int[] pos = Util.adjustPos(x, y, orientation);
 		this.ax = pos[0];
 		this.ay = pos[1];
-		System.out.println(ax);
-		System.out.println(ay);
 	}
 
 	public int getX() {
-		return x;
+		return x-(r==1 || r==2?9:0);
 	}
 
 	public void setX(int x) {
@@ -44,18 +43,19 @@ public class Pedestrian {
 	}
 
 	public int getY() {
-		return y;
+		return y-(r==3 || r==2?9:0);
 	}
 
 	public void setY(int y) {
+
 		this.y = y;
 	}
 
-	public Direction getOrientation() {
+	public Orientation getOrientation() {
 		return orientation;
 	}
 
-	public void setOrientation(Direction orientation) {
+	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
 
@@ -93,24 +93,34 @@ public class Pedestrian {
 		pedestrianImage.setRotation(orientation.ordinal() * 90);
 	}
 
-	public void turn(int direction) {
+	public void turn(Direction d) {
 
-		pedestrianImage.rotate((direction) * 90);
-		if (t2) {
-			
-			switch (direction) {
-			case 1:
-				System.out.println("y");
-				x += 9;
-				break;
-			case 3:
-				y += 9;
-				break;
+		pedestrianImage.setCenterOfRotation(0, 0);
+		pedestrianImage.rotate(d.ordinal() * 90);
+
+		switch (d) {
+		case RIGHT:
+			switch (r){
+			case 0: x += 9; break;
+			case 1: y += 9; break;
+			case 2: x -= 9; break;
+			case 3: y -= 9; break;
 			}
-			setAbsolute();
-			draw();
-			t2 = false;
+			r += 1;
+			break;
+		case LEFT:		
+			switch (r){
+			case 0: y += 9; break;
+			case 1: x -= 9; break;
+			case 2: y -= 9; break;
+			case 3: x += 9; break;
 		}
+			r -= 1;
+			break;
+		}
+		r = (r+ 4)%4;
+		setAbsolute();
+		draw();
 		turned++;
 	}
 

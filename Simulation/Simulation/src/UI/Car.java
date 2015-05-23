@@ -11,13 +11,13 @@ public class Car {
 	private int y;
 	private int ax; //absolute x;
 	private int ay;
-	private Direction orientation;
+	private Orientation orientation;
 	private String[] path = {"images/car2.png", "images/car3.png", "images/car4.png", "images/car5.png", "images/car6.png", "images/car7.png"};
 	private Image carImage;
 	private Boolean t = true;
 	private Boolean turned = false;
 	
-	public Car(int x, int y, Direction orientation) throws SlickException {
+	public Car(int x, int y, Orientation orientation) throws SlickException {
 		super();
 		this.x = x;
 		this.y = y;
@@ -45,10 +45,10 @@ public class Car {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public Direction getOrientation() {
+	public Orientation getOrientation() {
 		return orientation;
 	}
-	public void setOrientation(Direction orientation) {
+	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
 	
