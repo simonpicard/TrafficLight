@@ -1,0 +1,4 @@
+-pas de voitures ayant des trajets qui se croisent roulent en même temps
+-pas de feux piétons verts si feu de voiture équivalent vert   V
+-pas de feux piétons verts si une voiture ayant cette destination a son feu vert
+-pas de piétons finissant de traverser (le feux est donc devenu rouge pour eux) ne se fait écraser
