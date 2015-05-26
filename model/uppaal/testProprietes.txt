@@ -24,7 +24,7 @@ CarGenerator.AcceptCar --> CarGenerator.CarCrossing
 
 
 
-4) PAS DE COLLISION DE VOITURES
+4) PAS DE COLLISIONS DE VOITURES
 -------------------------------
 
 A[] not ((carLight[S] == GREEN && queue[S][0] == L && ((carLight[W] == GREEN && queue[W][0] == U) || (carLight[E] == GREEN && (queue[E][0] == L || queue[E][0] == U)) )) ||
@@ -34,6 +34,12 @@ A[] not ((carLight[S] == GREEN && queue[S][0] == L && ((carLight[W] == GREEN && 
 (carLight[E] == GREEN && queue[E][0] == L && ((carLight[S] == GREEN && queue[S][0] == L) || (carLight[W] == GREEN && (queue[W][0] == U || queue[W][0] == R)))) ||
 (carLight[E] == GREEN && queue[E][0] == U && carLight[S] == GREEN && queue[S][0] == L))
 
+
+4-BIS) PAS DE COLLISIONS DE VOITURES
+------------------------------------
+
+A[] not (CarGeneratorEAST.Crossing && ((CarGeneratorSouth.Crossing && queue[S][0] == L)|| (queue[E][0])==L && CarGeneratorWest.Crossing)
+CarGeneratorWest.Crossing && CarGeneratorSouth.Crossing)
 
 5) PAS DE DEADLOCK
 ------------------
