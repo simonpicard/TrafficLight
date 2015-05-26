@@ -8,13 +8,13 @@ Pedestrian.PushButton -->Pedestrian.Cross
 2) AUCUN PIETON NE SE FAIT ECRASER
 ----------------------------------
 
-A[] not (pedestrianLight == GREEN && (carLight[E] == GREEN || (carLight[W] == GREEN && queue[W][0] == U) || (carLight[S] == GREEN && queue[S][0] == R))
+A[] not (pedestrianLight == GREEN && (carLight[E] == GREEN || (carLight[W] == GREEN && queue[W][0] == U) || (carLight[S] == GREEN && queue[S][0] == R)))
 
 
 2-BIS) AUCUN PIETON NE SE FAIT ECRASER
 --------------------------------------
 
-A[] not (Pedestrian.Cross && (CarGeneratorEast.Crossing || CarGeneratorWest.Crossing && queue[W][0] == U || CarGeneratorSouth.Crossing && queue[S][0]==R))
+A[] not (PedestrianGeneratorEast.Cross && (CarGeneratorEast.CarCrossing || CarGeneratorWest.CarCrossing && queue[W][0] == U || CarGeneratorSouth.CarCrossing && queue[S][0]==R))
 
 
 3) TOUTE VOITURE FINI TOUJOUTS PAR PARTIR
@@ -38,8 +38,7 @@ A[] not ((carLight[S] == GREEN && queue[S][0] == L && ((carLight[W] == GREEN && 
 4-BIS) PAS DE COLLISIONS DE VOITURES
 ------------------------------------
 
-A[] not (CarGeneratorEAST.Crossing && ((CarGeneratorSouth.Crossing && queue[S][0] == L)|| (queue[E][0])==L && CarGeneratorWest.Crossing)
-CarGeneratorWest.Crossing && CarGeneratorSouth.Crossing)
+A[] not (CarGeneratorEast.CarCrossing && ((CarGeneratorSouth.CarCrossing && queue[S][0] == L) || (queue[E][0])==L && CarGeneratorWest.CarCrossing) || CarGeneratorWest.CarCrossing && CarGeneratorSouth.CarCrossing)
 
 5) PAS DE DEADLOCK
 ------------------
