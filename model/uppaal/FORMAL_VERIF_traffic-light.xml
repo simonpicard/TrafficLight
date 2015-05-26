@@ -2,7 +2,7 @@
 const int EAST=0, SOUTH=1, WEST=2;
 const int RED=0, ORANGE=1, GREEN=2;
 bool pedestrianCrossingButton = false;
-int[0,2] pedestrianLight = RED;
+int[0,2] pedestrianLight = GREEN;
 int[0,2] carLight[3] = {RED, RED, RED};
 
 const int QUEUE_SIZE=3;
@@ -12,10 +12,15 @@ int[0,2] destinationQueue[SOURCE][QUEUE_SIZE];
 int[0,3] queueIndex[3];</declaration><template><name x="5" y="5">PedestrianGenerator</name><parameter>int[0,2] location</parameter><declaration>clock crossingTime;
 const int MAX_CROSSING_TIME=5, MIN_CROSSING_TIME=3; </declaration><location id="id0" x="8" y="-112"><name x="32" y="-128">Cross</name><label kind="invariant" x="32" y="-112">crossingTime&lt;=MAX_CROSSING_TIME</label></location><location id="id1" x="-304" y="-112"><name x="-320" y="-144">Wait</name></location><location id="id2" x="-584" y="-112"><name x="-632" y="-152">PushButton</name><committed/></location><location id="id3" x="-976" y="-112"><name x="-992" y="-152">Empty</name></location><init ref="id3"/><transition controllable="false" action=""><source ref="id3"/><target ref="id2"/></transition><transition controllable="false" action=""><source ref="id0"/><target ref="id3"/><label kind="guard" x="-928" y="80">crossingTime&gt;=MIN_CROSSING_TIME</label><label kind="assignment" x="-928" y="96">pedestrianCrossingButton = false</label><nail x="-808" y="72"/></transition><transition action=""><source ref="id2"/><target ref="id0"/><label kind="guard" x="-416" y="-304">pedestrianLight == GREEN</label><label kind="assignment" x="-360" y="-288">crossingTime=0</label><nail x="-296" y="-272"/></transition><transition action=""><source ref="id1"/><target ref="id0"/><label kind="guard" x="-280" y="-144">pedestrianLight == GREEN</label><label kind="assignment" x="-208" y="-128">crossingTime=0</label></transition><transition action=""><source ref="id2"/><target ref="id1"/><label kind="guard" x="-568" y="-96">pedestrianLight == RED</label><label kind="assignment" x="-584" y="-80">pedestrianCrossingButton = true</label></transition></template><template><name>LightController</name><parameter>chan &amp;toggleRedEast, chan &amp;toggleGreenEast, chan &amp;toggleRedSouth, chan &amp;toggleGreenSouth, chan &amp;toggleRedWest, chan &amp;toggleGreenWest</parameter><declaration>const int MAX_CROSSING_TIME=5;
 clock crossingTime;// Pour permettre aux piétons de finir de traverser quand leur feu est rouge
+clock timer;
 
 
 bool eastGreen()
 {
+	if(queueIndex[EAST] == 0)
+	{
+		return false;
+	}
 	if(queueIndex[SOUTH] &gt; 0 &amp;&amp; destinationQueue[SOUTH][0] == WEST &amp;&amp; carLight[SOUTH] == GREEN)
 	{
 		return false;
@@ -32,7 +37,11 @@ bool eastGreen()
 }
 bool westGreen()
 {
-	if(carLight[SOUTH]==GREEN || queueIndex[SOUTH] &gt; 0)
+	if(queueIndex[WEST] == 0)
+	{
+		return false;
+	}
+	if(carLight[SOUTH]==GREEN &amp;&amp; queueIndex[SOUTH] &gt; 0)
 	{
 		return false;
 	}
@@ -40,7 +49,11 @@ bool westGreen()
 	{
 		return false;
 	}
-	if((pedestrianLight == GREEN || crossingTime &lt;= MAX_CROSSING_TIME) &amp;&amp; destinationQueue[WEST][0] == EAST &amp;&amp; queueIndex[WEST] &gt; 0)
+	//if(crossingTime &lt;= MAX_CROSSING_TIME)
+	//{
+	//	return false;
+	//}
+	if(pedestrianLight == GREEN &amp;&amp; destinationQueue[WEST][0] == EAST &amp;&amp; queueIndex[WEST] &gt; 0)
 	{
 		return false;
 	}
@@ -52,23 +65,40 @@ bool westGreen()
 }
 bool southGreen()
 {
-	if()
+	if(queueIndex[SOUTH] == 0)
 	{
+		return false;
 	}
-}</declaration><location id="id4" x="-216" y="-24"><name x="-200" y="-48">Initial</name></location><init ref="id4"/><transition action=""><source ref="id4"/><target ref="id4"/><label kind="synchronisation" x="-504" y="-288">toggleRedWest!</label><nail x="-400" y="-256"/><nail x="-320" y="-296"/></transition><transition action=""><source ref="id4"/><target ref="id4"/><label kind="synchronisation" x="-680" y="-128">toggleRedSouth!</label><nail x="-552" y="-80"/><nail x="-552" y="-176"/></transition><transition action=""><source ref="id4"/><target ref="id4"/><label kind="synchronisation" x="-632" y="96">toggleRedEast!</label><nail x="-496" y="136"/><nail x="-544" y="32"/></transition><transition action=""><source ref="id4"/><target ref="id4"/><label kind="guard" x="-464" y="240">westGreen()</label><label kind="synchronisation" x="-512" y="224">toggleGreenWest!</label><nail x="-336" y="248"/><nail x="-384" y="224"/></transition><transition action=""><source ref="id4"/><target ref="id4"/><label kind="synchronisation" x="-280" y="304">toggleGreenSouth!</label><nail x="-168" y="288"/><nail x="-264" y="296"/></transition><transition action=""><source ref="id4"/><target ref="id4"/><label kind="guard" x="40" y="200">eastGreen() &amp;&amp; crossingTime &gt;= MAX_CROSSING_TIME</label><label kind="synchronisation" x="-8" y="224">toggleGreenEast!</label><nail x="32" y="216"/><nail x="-40" y="232"/></transition><transition action=""><source ref="id4"/><target ref="id4"/><label kind="assignment" x="128" y="-16">pedestrianLight=RED,crossingTime=0</label><nail x="112" y="-40"/><nail x="104" y="32"/></transition><transition action=""><source ref="id4"/><target ref="id4"/><label kind="guard" x="-104" y="-320">pedestrianCrossingButton  &amp;&amp; carLight[EAST]==RED &amp;&amp; (carLight[WEST]==RED || destinationQueue[WEST][0] != EAST) &amp;&amp; (carLight[SOUTH]==RED || destinationQueue[SOUTH][0] != EAST)</label><label kind="assignment" x="-120" y="-304">pedestrianLight=GREEN</label><nail x="-160" y="-296"/><nail x="-88" y="-272"/></transition></template><template><name>Light</name><parameter>chan &amp;toggleRed, chan &amp;toggleGreen, int[0,3] location</parameter><declaration>int SWITCHING_TIME = 1;
-clock x;</declaration><location id="id5" x="-944" y="56"><name x="-920" y="48">Green</name></location><location id="id6" x="-944" y="-152"><name x="-920" y="-160">Orange</name><label kind="invariant" x="-920" y="-144">x&lt;=SWITCHING_TIME</label></location><location id="id7" x="-944" y="-368"><name x="-920" y="-376">Red</name></location><init ref="id7"/><transition action=""><source ref="id7"/><target ref="id5"/><label kind="synchronisation" x="-1160" y="-160">toggleGreen?</label><label kind="assignment" x="-1248" y="-144">carLight[location]=GREEN</label><nail x="-1056" y="-144"/></transition><transition controllable="false" action=""><source ref="id6"/><target ref="id7"/><label kind="guard" x="-928" y="-272">x==SWITCHING_TIME</label><label kind="assignment" x="-928" y="-256">carLight[location]=RED</label></transition><transition action=""><source ref="id5"/><target ref="id6"/><label kind="synchronisation" x="-936" y="-64">toggleRed?</label><label kind="assignment" x="-936" y="-48">x=0, carLight[location]=ORANGE</label></transition></template><template><name>CarGenerator</name><parameter>int[0,2] location</parameter><declaration>clock crossingTime;
-const int MIN_CROSSING_TIME=3, MAX_CROSSING_TIME=5;</declaration><location id="id8" x="-688" y="-192"><name x="-712" y="-224">CarCrossing</name><label kind="invariant" x="-672" y="-192">crossingTime&lt;=MAX_CROSSING_TIME</label></location><location id="id9" x="-1168" y="-192"><name x="-1200" y="-168">AcceptCar</name></location><init ref="id9"/><transition controllable="false" action=""><source ref="id8"/><target ref="id9"/><label kind="guard" x="-936" y="-32">crossingTime&gt;=MIN_CROSSING_TIME</label><nail x="-736" y="-48"/><nail x="-1120" y="-112"/></transition><transition action=""><source ref="id9"/><target ref="id8"/><label kind="guard" x="-1064" y="-176">carLight[location]==GREEN &amp;&amp; queueIndex[location]&gt;0</label><label kind="assignment" x="-1048" y="-160">destinationQueue[location][0]=destinationQueue[location][1],
+	if(carLight[EAST] == RED &amp;&amp; carLight[WEST] == RED &amp;&amp; destinationQueue[SOUTH][0] == WEST)
+	{
+		return true;
+	}
+	if(carLight[EAST] == RED &amp;&amp; carLight[WEST] == RED &amp;&amp; destinationQueue[SOUTH][0] == EAST &amp;&amp; pedestrianLight == RED)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}</declaration><location id="id4" x="-64" y="-280"><name x="-74" y="-310">Init</name><urgent/></location><location id="id5" x="-208" y="-120"><name x="-192" y="-144">Control</name><label kind="invariant" x="-168" y="-200">pedestrianLight != RED ||
+carLight[EAST] != RED ||
+carLight[WEST] != RED ||
+carLight[SOUTH] != RED</label></location><init ref="id4"/><transition controllable="false" action=""><source ref="id4"/><target ref="id5"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="assignment" x="-464" y="-400">carLight[WEST]=RED</label><nail x="-392" y="-352"/><nail x="-312" y="-392"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="synchronisation" x="-672" y="-224">toggleRedSouth!</label><nail x="-544" y="-176"/><nail x="-544" y="-272"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="synchronisation" x="-624" y="0">toggleRedEast!</label><nail x="-488" y="40"/><nail x="-536" y="-64"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="guard" x="-456" y="144">westGreen()</label><label kind="synchronisation" x="-504" y="128">toggleGreenWest!</label><nail x="-328" y="152"/><nail x="-376" y="128"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="guard" x="-200" y="192">southGreen()</label><label kind="synchronisation" x="-272" y="208">toggleGreenSouth!</label><nail x="-160" y="192"/><nail x="-256" y="200"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="guard" x="48" y="104">eastGreen() &amp;&amp; crossingTime &gt; MAX_CROSSING_TIME</label><label kind="synchronisation" x="0" y="128">toggleGreenEast!</label><nail x="40" y="120"/><nail x="-32" y="136"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="assignment" x="136" y="-112">pedestrianLight=RED,crossingTime=0</label><nail x="120" y="-136"/><nail x="112" y="-64"/></transition><transition action=""><source ref="id5"/><target ref="id5"/><label kind="guard" x="-96" y="-416">pedestrianCrossingButton  &amp;&amp; carLight[EAST]==RED &amp;&amp; (carLight[WEST]==RED || destinationQueue[WEST][0] != EAST) &amp;&amp; (carLight[SOUTH]==RED || destinationQueue[SOUTH][0] != EAST)</label><label kind="assignment" x="-112" y="-400">pedestrianLight=GREEN</label><nail x="-152" y="-392"/><nail x="-80" y="-368"/></transition></template><template><name>Light</name><parameter>chan &amp;toggleRed, chan &amp;toggleGreen, int[0,3] location</parameter><declaration>int SWITCHING_TIME = 1;
+clock x;</declaration><location id="id6" x="-944" y="56"><name x="-920" y="48">Green</name></location><location id="id7" x="-944" y="-152"><name x="-920" y="-160">Orange</name><label kind="invariant" x="-920" y="-144">x&lt;=SWITCHING_TIME</label></location><location id="id8" x="-944" y="-368"><name x="-920" y="-376">Red</name></location><init ref="id8"/><transition action=""><source ref="id8"/><target ref="id6"/><label kind="synchronisation" x="-1160" y="-160">toggleGreen?</label><label kind="assignment" x="-1248" y="-144">carLight[location]=GREEN</label><nail x="-1056" y="-144"/></transition><transition controllable="false" action=""><source ref="id7"/><target ref="id8"/><label kind="guard" x="-928" y="-272">x==SWITCHING_TIME</label><label kind="assignment" x="-928" y="-256">carLight[location]=RED</label></transition><transition action=""><source ref="id6"/><target ref="id7"/><label kind="synchronisation" x="-936" y="-64">toggleRed?</label><label kind="assignment" x="-936" y="-48">x=0, carLight[location]=ORANGE</label></transition></template><template><name>CarGenerator</name><parameter>int[0,2] location</parameter><declaration>clock crossingTime;
+const int MIN_CROSSING_TIME=3, MAX_CROSSING_TIME=5;</declaration><location id="id9" x="-688" y="-192"><name x="-712" y="-224">CarCrossing</name><label kind="invariant" x="-672" y="-192">crossingTime&lt;=MAX_CROSSING_TIME</label></location><location id="id10" x="-1168" y="-192"><name x="-1248" y="-184">AcceptCar</name><label kind="invariant" x="-1352" y="-168">carLight[location]!=GREEN ||
+queueIndex[location] == 0</label></location><init ref="id10"/><transition controllable="false" action=""><source ref="id9"/><target ref="id10"/><label kind="guard" x="-936" y="-32">crossingTime&gt;=MIN_CROSSING_TIME</label><nail x="-736" y="-48"/><nail x="-1120" y="-112"/></transition><transition action=""><source ref="id10"/><target ref="id9"/><label kind="guard" x="-1064" y="-176">carLight[location]==GREEN &amp;&amp; queueIndex[location]&gt;0</label><label kind="assignment" x="-1048" y="-160">destinationQueue[location][0]=destinationQueue[location][1],
 destinationQueue[location][1]=destinationQueue[location][2],
 queueIndex[location]--,
-crossingTime=0</label><nail x="-888" y="-184"/></transition><transition controllable="false" action=""><source ref="id9"/><target ref="id9"/><label kind="guard" x="-1808" y="-288">carLight[location]!=GREEN &amp;&amp; location!=EAST &amp;&amp; queueIndex[location]!=QUEUE_SIZE</label><label kind="assignment" x="-1560" y="-272">destinationQueue[location][queueIndex[location]]=EAST,
-queueIndex[location]++</label><nail x="-1216" y="-312"/><nail x="-1280" y="-240"/></transition><transition controllable="false" action=""><source ref="id9"/><target ref="id9"/><label kind="guard" x="-1048" y="-312">carLight[location]!=GREEN &amp;&amp; location!=WEST &amp;&amp; queueIndex[location]!=QUEUE_SIZE</label><label kind="assignment" x="-1016" y="-296">destinationQueue[location][queueIndex[location]]=WEST,
-queueIndex[location]++</label><nail x="-1072" y="-312"/><nail x="-1000" y="-240"/></transition><transition controllable="false" action=""><source ref="id9"/><target ref="id9"/><label kind="guard" x="-1400" y="-376">carLight[location]!=GREEN &amp;&amp; location!=SOUTH &amp;&amp; queueIndex[location]!=QUEUE_SIZE</label><label kind="assignment" x="-1264" y="-360">destinationQueue[location][queueIndex[location]]=SOUTH,
+crossingTime=0</label><nail x="-888" y="-184"/></transition><transition controllable="false" action=""><source ref="id10"/><target ref="id10"/><label kind="guard" x="-1808" y="-288">carLight[location]!=GREEN &amp;&amp; location!=EAST &amp;&amp; queueIndex[location]!=QUEUE_SIZE</label><label kind="assignment" x="-1560" y="-272">destinationQueue[location][queueIndex[location]]=EAST,
+queueIndex[location]++</label><nail x="-1216" y="-312"/><nail x="-1280" y="-240"/></transition><transition controllable="false" action=""><source ref="id10"/><target ref="id10"/><label kind="guard" x="-1048" y="-312">carLight[location]!=GREEN &amp;&amp; location!=WEST &amp;&amp; queueIndex[location]!=QUEUE_SIZE</label><label kind="assignment" x="-1016" y="-296">destinationQueue[location][queueIndex[location]]=WEST,
+queueIndex[location]++</label><nail x="-1072" y="-312"/><nail x="-1000" y="-240"/></transition><transition controllable="false" action=""><source ref="id10"/><target ref="id10"/><label kind="guard" x="-1400" y="-376">carLight[location]!=GREEN &amp;&amp; location!=SOUTH &amp;&amp; queueIndex[location]!=QUEUE_SIZE</label><label kind="assignment" x="-1264" y="-360">destinationQueue[location][queueIndex[location]]=SOUTH,
 queueIndex[location]++</label><nail x="-1200" y="-320"/><nail x="-1088" y="-320"/></transition></template><system>chan toggleRedEast, toggleGreenEast;
 chan toggleRedSouth, toggleGreenSouth;
 chan toggleRedWest, toggleGreenWest;
 
 
-PedestrianGeneratorEast = PedestrianGenerator(EAST);
+PedestrianGen = PedestrianGenerator(EAST);
 
 
 CarGeneratorEast = CarGenerator(EAST);
@@ -82,7 +112,7 @@ LightEast = Light(toggleRedEast, toggleGreenEast, EAST);
 LightSouth = Light(toggleRedSouth, toggleGreenSouth, SOUTH);
 LightWest = Light(toggleRedWest, toggleGreenWest, WEST);
 
-system PedestrianGeneratorEast,
+system PedestrianGen,
 CarGeneratorEast, CarGeneratorSouth, CarGeneratorWest,
 LightController1,
 LightEast, LightSouth, LightWest;</system></nta>
