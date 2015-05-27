@@ -6,7 +6,7 @@ public class Util {
 		int temp;
 		//System.out.println(orientation);
 		switch (orientation){
-		case NORTH:
+		case SOUTH:
 			x += 400;
 			y += 400;
 			break;
@@ -15,7 +15,7 @@ public class Util {
 			y = 400+x;
 			x = 400-temp;
 			break;
-		case SOUTH:
+		case NORTH:
 			y = 400-y;
 			x = 400-x;
 			break;

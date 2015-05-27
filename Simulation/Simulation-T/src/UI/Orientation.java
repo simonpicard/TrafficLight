@@ -1,7 +1,7 @@
 package UI;
 
 public enum Orientation {
-	NORTH, WEST, SOUTH, EAST;
+	SOUTH, WEST, NORTH, EAST;
 	
 	private static Orientation[] vals = values();
     public Orientation next()

@@ -4,12 +4,8 @@ import org.newdawn.slick.SlickException;
 
 public class Road {
 	
-	private PedestrianLight pedestrianTL;
-	private LeftLight leftTL;
-	private RightLight rightTL;
-	private UpLight upTL;
 	private Orientation orientation;
-	private Lane lane;
+	private LaneT lane;
 	private Sidewalk sidewalk;
 	
 	public Road(Orientation orientation) throws SlickException{
@@ -18,58 +14,39 @@ public class Road {
 	}
 	
 	private void init() throws SlickException{
-		pedestrianTL = new PedestrianLight(134, 134, orientation);
-		leftTL = new LeftLight(5, 100, orientation);
-		upTL = new UpLight(44, 100, orientation);
-		rightTL = new RightLight(83, 100, orientation);
-		lane = new Lane(orientation);
-		sidewalk = new Sidewalk(orientation);
+		lane = new LaneT(orientation);
+		if (orientation == Orientation.WEST)
+			sidewalk = new Sidewalk(orientation);
 	}
 	
 	public void draw(){
-		pedestrianTL.draw();
-		leftTL.draw();
-		upTL.draw();
-		rightTL.draw();
 		lane.draw();
-		sidewalk.draw();
+		if (orientation == Orientation.WEST)
+			sidewalk.draw();
 	}
 	
 	public void update(){
 		lane.update();
-		sidewalk.update();
-	}
-	
-	public void setLeft(LightEnum le){
-		leftTL.setState(le);
-	}
-	
-	public void setRight(LightEnum le){
-		rightTL.setState(le);
-	}
-	
-	public void setUp(LightEnum le){
-		upTL.setState(le);
-	}
-	
-	public void setPedestrian(LightEnum le){
-		pedestrianTL.setState(le);
+		if (orientation == Orientation.WEST)
+			sidewalk.update();
 	}
 	
 	public void addCar(Direction lane) throws SlickException{
 		this.lane.addCar(lane);
 	}
 	
-	public void removeCar(Direction lane) throws SlickException{
-		this.lane.removeCar(lane);
+	public void removeCar() throws SlickException{
+		this.lane.removeCar();
 	}
 	
 	public void addPedestrian(Direction lane) throws SlickException{
-		this.sidewalk.addPedestrian(lane);
+		if (orientation == Orientation.WEST)
+			this.sidewalk.addPedestrian(lane);
 	}
 	
 	public void removePedestrian(Direction lane) throws SlickException{
-		this.sidewalk.removePedestrian(lane);
+		if (orientation == Orientation.WEST)
+			this.sidewalk.removePedestrian(lane);
 	}
 
 }

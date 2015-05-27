@@ -10,8 +10,8 @@ public class UpLight extends TrafficLight {
 	}
 
 	protected void setPaths(){
-		greenPath = "images/voitureHautVert.png";
-		orangePath = "images/voitureHautOrange.png";
-		redPath = "images/voitureHautRouge.png";
+		greenPath = "images/voitureRondVert.png";
+		orangePath = "images/voitureRondOrange.png";
+		redPath = "images/voitureRondRouge.png";
 	}
 }

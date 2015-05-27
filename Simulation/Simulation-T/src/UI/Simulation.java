@@ -20,8 +20,8 @@ public class Simulation extends BasicGame {
 
 	private GameContainer container;
 	private Image background;
-	private ArrayList<Road> roads = new ArrayList<Road>();
 	private int o = 0;
+	private CrossRoad cr;
 
 	// orientation 0: nord; 1: ouest; 2: sud; 3:est
 
@@ -32,12 +32,9 @@ public class Simulation extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
-		background = new Image("images/road.png");
-		roads.add(new Road(Orientation.NORTH));
-		roads.add(new Road(Orientation.WEST));
-		roads.add(new Road(Orientation.SOUTH));
-		roads.add(new Road(Orientation.EAST));
-		setSpeed(10);
+		background = new Image("images/roadT.png");
+		cr = new CrossRoad();
+		setSpeed(1);
 	}
 
 	public void render(GameContainer container, Graphics g)
@@ -45,8 +42,8 @@ public class Simulation extends BasicGame {
 		g.drawImage(background, 0, 0);
 		// g.drawImage(pLightDown.getLight(), pLightDown.getX(),
 		// pLightDown.getY());
-		for (Road r : roads)
-			r.draw();
+		cr.draw();
+		
 
 	}
 
@@ -59,7 +56,21 @@ public class Simulation extends BasicGame {
 		}
 
 	}
+	@Override
+	public void keyPressed(int key, char c) {
+		try {
+			switch (key) {
+			case Input.KEY_Z: cr.addCar(Orientation.EAST, Direction.LEFT); break;
+			case Input.KEY_E: cr.addCar(Orientation.EAST, Direction.UP); break;
+			case Input.KEY_S: cr.removeCar(Orientation.EAST); break;
+			}
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	}
+/*
 	@Override
 	public void keyPressed(int key, char c) {
 		try {
@@ -81,12 +92,11 @@ public class Simulation extends BasicGame {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 	@Override
 	public void update(GameContainer arg0, int delta) throws SlickException {
-		for (Road r : roads)
-			r.update();
+		cr.update();
 
 	}
 
