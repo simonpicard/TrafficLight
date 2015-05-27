@@ -731,5 +731,11 @@ LightController1;</system>
 			<comment>5
 			</comment>
 		</query>
+		<query>
+			<formula>A[] not(TimerPedestrian.FullUrgentQueue || TimerEast.FullUrgentQueue || TimerSouth.FullUrgentQueue || TimerWest.FullUrgentQueue)
+			</formula>
+			<comment>6
+			</comment>
+		</query>
 	</queries>
 </nta>
