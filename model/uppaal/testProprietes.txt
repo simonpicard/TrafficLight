@@ -19,8 +19,15 @@ A[] not (PedestrianGeneratorEast.Cross && (CarGeneratorEast.CarCrossing || CarGe
 
 3) TOUTE VOITURE FINI TOUJOUTS PAR PARTIR
 -----------------------------------------
-
-CarGenerator.AcceptCar --> CarGenerator.CarCrossing
+3.1) UNE VOITURE QUI VEUT TRAVERSER A L'EST FINI TOUJOURS PAR LE POUVOIR
+-------------------------------------------------------------------------
+(CarGeneratorEast.AcceptCar&&queueIndex[E]!=0) --> CarGeneratorEast.CarCrossing
+3.2) UNE VOITURE QUI VEUT TRAVERSER AU SUD FINI TOUJOURS PAR LE POUVOIR
+-------------------------------------------------------------------------
+(CarGeneratorSouth.AcceptCar&&queueIndex[S]!=0) --> CarGeneratorSouth.CarCrossing
+3.3) UNE VOITURE QUI VEUT TRAVERSER A L'OUEST FINI TOUJOURS PAR LE POUVOIR
+-------------------------------------------------------------------------
+(CarGeneratorWest.AcceptCar&&queueIndex[W]!=0) --> CarGeneratorWest.CarCrossing
 
 
 
