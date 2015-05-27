@@ -61,3 +61,8 @@ A[] not ((CarGeneratorSouth.CarCrossing && queue[S][0] == L && ((CarGeneratorWes
 ------------------
 
 A[] not deadlock
+
+6) LA FILE D'URGENCE NE DEBORDE PAS
+-----------------------------------
+
+A[] not(TimerPedestrian.FullUrgentQueue || TimerEast.FullUrgentQueue || TimerSouth.FullUrgentQueue || TimerWest.FullUrgentQueue)

@@ -48,3 +48,7 @@ A[] not ((CarGeneratorSouth.CarCrossing && queue[S][0] == L && ((CarGeneratorWes
 5
 */
 A[] not deadlock
+/*
+6
+*/
+A[] not(TimerPedestrian.FullUrgentQueue || TimerEast.FullUrgentQueue || TimerSouth.FullUrgentQueue || TimerWest.FullUrgentQueue)
