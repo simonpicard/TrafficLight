@@ -19,8 +19,15 @@ A[] not (PedestrianGeneratorEast.Cross && (CarGeneratorEast.CarCrossing || CarGe
 
 3) TOUTE VOITURE FINI TOUJOUTS PAR PARTIR
 -----------------------------------------
-
-CarGenerator.AcceptCar --> CarGenerator.CarCrossing
+3.1) UNE VOITURE QUI VEUT TRAVERSER A L'EST FINI TOUJOURS PAR LE POUVOIR
+-------------------------------------------------------------------------
+(CarGeneratorEast.AcceptCar&&queueIndex[E]!=0) --> CarGeneratorEast.CarCrossing
+3.2) UNE VOITURE QUI VEUT TRAVERSER AU SUD FINI TOUJOURS PAR LE POUVOIR
+-------------------------------------------------------------------------
+(CarGeneratorSouth.AcceptCar&&queueIndex[S]!=0) --> CarGeneratorSouth.CarCrossing
+3.3) UNE VOITURE QUI VEUT TRAVERSER A L'OUEST FINI TOUJOURS PAR LE POUVOIR
+-------------------------------------------------------------------------
+(CarGeneratorWest.AcceptCar&&queueIndex[W]!=0) --> CarGeneratorWest.CarCrossing
 
 
 
@@ -40,7 +47,22 @@ A[] not ((carLight[S] == GREEN && queue[S][0] == L && ((carLight[W] == GREEN && 
 
 A[] not (CarGeneratorEast.CarCrossing && ((CarGeneratorSouth.CarCrossing && queue[S][0] == L) || (queue[E][0])==L && CarGeneratorWest.CarCrossing) || CarGeneratorWest.CarCrossing && CarGeneratorSouth.CarCrossing)
 
+4-TER) PAS DE COLLISIONS DE VOITURES
+------------------------------------
+
+A[] not ((CarGeneratorSouth.CarCrossing && queue[S][0] == L && ((CarGeneratorWest.CarCrossing && queue[W][0] == U) || (CarGeneratorEast.CarCrossing && (queue[E][0] == L || queue[E][0] == U)) )) ||
+(CarGeneratorSouth.CarCrossing && queue[S][0] == R && CarGeneratorWest.CarCrossing && queue[W][0] == U) ||
+(CarGeneratorWest.CarCrossing && queue[W][0] == U && ((CarGeneratorEast.CarCrossing && queue[E][0] == L) || (CarGeneratorSouth.CarCrossing && (queue[S][0] == L || queue[S][0] == R)))) ||
+(CarGeneratorWest.CarCrossing && queue[W][0] == R && CarGeneratorEast.CarCrossing && queue[E][0] == L) ||
+(CarGeneratorEast.CarCrossing && queue[E][0] == L && ((CarGeneratorSouth.CarCrossing && queue[S][0] == L) || (CarGeneratorWest.CarCrossing && (queue[W][0] == U || queue[W][0] == R)))) ||
+(CarGeneratorEast.CarCrossing && queue[E][0] == U && CarGeneratorSouth.CarCrossing && queue[S][0] == L))
+
 5) PAS DE DEADLOCK
 ------------------
 
 A[] not deadlock
+
+6) LA FILE D'URGENCE NE DEBORDE PAS
+-----------------------------------
+
+A[] not(TimerPedestrian.FullUrgentQueue || TimerEast.FullUrgentQueue || TimerSouth.FullUrgentQueue || TimerWest.FullUrgentQueue)
