@@ -294,11 +294,6 @@ carLight[W]=RED,
 x=0</label>
 		</transition>
 		<transition>
-			<source ref="id11"/>
-			<target ref="id30"/>
-			<nail x="-2074" y="-1666"/>
-		</transition>
-		<transition>
 			<source ref="id29"/>
 			<target ref="id11"/>
 			<label kind="guard" x="-1360" y="-1215">urgentQueueIndex!=0</label>
