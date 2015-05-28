@@ -264,7 +264,7 @@ const int MAX_WAITING_TIME = 30;
 		<transition>
 			<source ref="id17"/>
 			<target ref="id28"/>
-			<label kind="guard" x="-960" y="-1708">(queueIndex[W]==0||queue[W][0]!=U) &amp;&amp;
+			<label kind="guard" x="-960" y="-1708">(queueIndex[W]==0||(queue[W][0]!=U&amp;&amp;queue[W][0]!=R)) &amp;&amp;
 (queueIndex[S]==0||queue[S][0]!=R) &amp;&amp;
 queueIndex[E]==1</label>
 			<nail x="-867" y="-1666"/>
@@ -273,7 +273,7 @@ queueIndex[E]==1</label>
 		<transition>
 			<source ref="id17"/>
 			<target ref="id29"/>
-			<label kind="guard" x="-850" y="-1759">(queueIndex[W]==0||queue[W][0]!=U) &amp;&amp;
+			<label kind="guard" x="-850" y="-1759">(queueIndex[W]==0||(queue[W][0]!=U&amp;&amp;queue[W][0]!=R)) &amp;&amp;
 (queueIndex[S]==0||queue[S][0]!=R) &amp;&amp;
 queueIndex[E]==2</label>
 		</transition>
@@ -317,7 +317,7 @@ queueIndex[E]==2</label>
 		<transition>
 			<source ref="id17"/>
 			<target ref="id15"/>
-			<label kind="guard" x="-773" y="-1827">(queueIndex[W]==0||queue[W][0]!=U) &amp;&amp;
+			<label kind="guard" x="-773" y="-1827">(queueIndex[W]==0||(queue[W][0]!=U&amp;&amp;queue[W][0]!=R)) &amp;&amp;
 queueIndex[S]!=0 &amp;&amp; queue[S][0]==R</label>
 			<label kind="synchronisation" x="-688" y="-1793">lightGreen[S]!</label>
 			<label kind="assignment" x="-688" y="-1776">carLight[S]=GREEN</label>
@@ -325,8 +325,8 @@ queueIndex[S]!=0 &amp;&amp; queue[S][0]==R</label>
 		<transition>
 			<source ref="id17"/>
 			<target ref="id9"/>
-			<label kind="guard" x="-850" y="-1921">queueIndex[W]!=0 &amp;&amp;
-queue[W][0]==U</label>
+			<label kind="guard" x="-884" y="-1921">queueIndex[W]!=0 &amp;&amp;
+(queue[W][0]==U||queue[W][0]==R)</label>
 			<label kind="synchronisation" x="-841" y="-1887">lightGreen[W]!</label>
 			<label kind="assignment" x="-850" y="-1870">carLight[W]=GREEN</label>
 		</transition>
