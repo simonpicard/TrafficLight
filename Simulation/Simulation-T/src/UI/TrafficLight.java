@@ -64,12 +64,15 @@ public abstract class TrafficLight {
 	}
 
 	public Image getLight() {
-		if (state == LightEnum.RED)
+		switch(state){
+		case RED:
 			return redLight;
-		else if (state == LightEnum.GREEN)
-			return greenLight;
-		else
+		case ORANGE:
 			return orangeLight;
+		case GREEN:
+			return greenLight;
+		}
+		return greenLight;
 	}
 
 	protected void rotateLights(){
@@ -85,7 +88,7 @@ public abstract class TrafficLight {
 		if (t){
 			getLight().draw(x,y);
 			rotateLights();
-			t = false;
+			//t = false;
 		}
 		getLight().draw(x,y);
 	}

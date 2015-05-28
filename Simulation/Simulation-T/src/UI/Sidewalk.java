@@ -29,11 +29,11 @@ public class Sidewalk {
 	public void addPedestrian(Direction lane) throws SlickException {
 		switch (lane) {
 		case LEFT:
-			leftPedestrians.add(new Pedestrian(-134, 400, orientation));
+			leftPedestrians.add(new Pedestrian(-55, 400, orientation));
 			nbLeft++;
 			break;
 		case RIGHT:
-			rightPedestrians.add(new Pedestrian(116, 400, orientation));
+			rightPedestrians.add(new Pedestrian(37, 400, orientation));
 			nbRight++;
 			break;
 		}
@@ -66,11 +66,11 @@ public class Sidewalk {
 
 		for (int i = leftPedestrians.size() - nbLeft; i < leftPedestrians
 				.size(); i++) {
-			if (leftPedestrians.get(i).getY() > 151 + (j-1<0?0:j-1) * (pedestrianSize + 2) && leftPedestrians.get(i).getTurned() == 0)
+			if (leftPedestrians.get(i).getY() > 47 + (j-1<0?0:j-1) * (pedestrianSize + 2) && leftPedestrians.get(i).getTurned() == 0)
 				leftPedestrians.get(i).up();
-			else if (leftPedestrians.get(i).getY() == 151 && leftPedestrians.get(i).getTurned() == 0)
+			else if (leftPedestrians.get(i).getY() == 47 && leftPedestrians.get(i).getTurned() == 0)
 				leftPedestrians.get(i).turn(Direction.RIGHT);
-			else if (leftPedestrians.get(i).getX() < -125 && leftPedestrians.get(i).getTurned() == 1 && j == 0)
+			else if (leftPedestrians.get(i).getX() < -46 && leftPedestrians.get(i).getTurned() == 1 && j == 0)
 				leftPedestrians.get(i).right();
 			j++;
 		}
@@ -78,9 +78,9 @@ public class Sidewalk {
 		j = 0;
 		for (int i = rightPedestrians.size() - nbRight; i < rightPedestrians
 				.size(); i++) {
-			if (rightPedestrians.get(i).getY() > 191 + j * (pedestrianSize + 2) && rightPedestrians.get(i).getTurned() == 0)
+			if (rightPedestrians.get(i).getY() > 79 + j * (pedestrianSize + 2) && rightPedestrians.get(i).getTurned() == 0)
 				rightPedestrians.get(i).up();
-			else if (rightPedestrians.get(i).getY() == 191 && rightPedestrians.get(i).getTurned() == 0)
+			else if (rightPedestrians.get(i).getY() == 79 && rightPedestrians.get(i).getTurned() == 0)
 				rightPedestrians.get(i).turn(Direction.LEFT);
 			j++;
 		}
@@ -89,13 +89,13 @@ public class Sidewalk {
 
 	public void updateLeaving() {
 		for (int i = 0; i < leavingLeft; i++) {
-			if (leftPedestrians.get(i).getY() > 151 && leftPedestrians.get(i).getTurned() == 0)
+			if (leftPedestrians.get(i).getY() > 47 && leftPedestrians.get(i).getTurned() == 0)
 				leftPedestrians.get(i).up();
-			else if (leftPedestrians.get(i).getY() == 151 && leftPedestrians.get(i).getTurned() == 0)
+			else if (leftPedestrians.get(i).getY() == 47 && leftPedestrians.get(i).getTurned() == 0)
 				leftPedestrians.get(i).turn(Direction.RIGHT);
-			else if (leftPedestrians.get(i).getX() < 125 && leftPedestrians.get(i).getTurned() == 1)
+			else if (leftPedestrians.get(i).getX() < 45 && leftPedestrians.get(i).getTurned() == 1)
 				leftPedestrians.get(i).right();
-			else if (leftPedestrians.get(i).getX() == 125 && leftPedestrians.get(i).getTurned() == 1)
+			else if (leftPedestrians.get(i).getX() == 45 && leftPedestrians.get(i).getTurned() == 1)
 				leftPedestrians.get(i).turn(Direction.RIGHT);
 			else if (leftPedestrians.get(i).getY() < 400 && leftPedestrians.get(i).getTurned() == 2)
 				leftPedestrians.get(i).down();
@@ -106,13 +106,13 @@ public class Sidewalk {
 			}
 		}
 		for (int i = 0; i < leavingRight; i++) {
-			if (rightPedestrians.get(i).getY() > 191 && rightPedestrians.get(i).getTurned() == 0)
+			if (rightPedestrians.get(i).getY() > 79 && rightPedestrians.get(i).getTurned() == 0)
 				rightPedestrians.get(i).up();
-			else if (rightPedestrians.get(i).getY() == 191 && rightPedestrians.get(i).getTurned() == 0)
+			else if (rightPedestrians.get(i).getY() == 79 && rightPedestrians.get(i).getTurned() == 0)
 				rightPedestrians.get(i).turn(Direction.LEFT);
-			else if (rightPedestrians.get(i).getX() > -116-pedestrianSize && rightPedestrians.get(i).getTurned() == 1)
+			else if (rightPedestrians.get(i).getX() > -46 && rightPedestrians.get(i).getTurned() == 1)
 				rightPedestrians.get(i).left();
-			else if (rightPedestrians.get(i).getX() == -116-pedestrianSize && rightPedestrians.get(i).getTurned() == 1)
+			else if (rightPedestrians.get(i).getX() == -46 && rightPedestrians.get(i).getTurned() == 1)
 				rightPedestrians.get(i).turn(Direction.LEFT);
 			else if (rightPedestrians.get(i).getY() < 400  && rightPedestrians.get(i).getTurned() == 2)
 				rightPedestrians.get(i).down();

@@ -15,19 +15,19 @@ public class Road {
 	
 	private void init() throws SlickException{
 		lane = new LaneT(orientation);
-		if (orientation == Orientation.WEST)
+		if (orientation == Orientation.EAST)
 			sidewalk = new Sidewalk(orientation);
 	}
 	
 	public void draw(){
 		lane.draw();
-		if (orientation == Orientation.WEST)
+		if (orientation == Orientation.EAST)
 			sidewalk.draw();
 	}
 	
 	public void update(){
 		lane.update();
-		if (orientation == Orientation.WEST)
+		if (orientation == Orientation.EAST)
 			sidewalk.update();
 	}
 	
@@ -40,12 +40,12 @@ public class Road {
 	}
 	
 	public void addPedestrian(Direction lane) throws SlickException{
-		if (orientation == Orientation.WEST)
+		if (orientation == Orientation.EAST)
 			this.sidewalk.addPedestrian(lane);
 	}
 	
 	public void removePedestrian(Direction lane) throws SlickException{
-		if (orientation == Orientation.WEST)
+		if (orientation == Orientation.EAST)
 			this.sidewalk.removePedestrian(lane);
 	}
 
