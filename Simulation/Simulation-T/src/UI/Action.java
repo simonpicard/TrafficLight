@@ -5,9 +5,9 @@ public class Action {
 	private String action;
 	private Orientation o;
 	private Direction d;
-	private LightEnum le;
+	private LightColor le;
 	
-	public Action(String action, Orientation o, Direction d, LightEnum le) {
+	public Action(String action, Orientation o, Direction d, LightColor le) {
 		super();
 		this.action = action;
 		this.o = o;
@@ -23,7 +23,7 @@ public class Action {
 		this.le = null;
 	}
 	
-	public Action(String action, Orientation o, LightEnum le) {
+	public Action(String action, Orientation o, LightColor le) {
 		super();
 		this.action = action;
 		this.o = o;
@@ -31,7 +31,7 @@ public class Action {
 		this.le = le;
 	}
 	
-	public Action(String action, LightEnum le) {
+	public Action(String action, LightColor le) {
 		super();
 		this.action = action;
 		this.o = null;
@@ -79,7 +79,7 @@ public class Action {
 		return d;
 	}
 
-	public LightEnum getLightColor() {
+	public LightColor getLightColor() {
 		return le;
 	}
 }

@@ -28,7 +28,7 @@ public class CrossRoad {
 		roads.add(new Road(Orientation.EAST));
 	}
 	
-	public LightEnum getState(Orientation o){
+	public LightColor getState(Orientation o){
 		switch(o){
 		case EAST:
 			return upTLE.getState();
@@ -56,7 +56,7 @@ public class CrossRoad {
 			r.update();
 	}
 	
-	public void setTL(LightEnum le, Orientation o){
+	public void setTL(LightColor le, Orientation o){
 		switch(o){
 		case EAST:
 			upTLE.setState(le);
@@ -70,7 +70,7 @@ public class CrossRoad {
 		}
 	}
 	
-	public void setPedestrian(LightEnum le){
+	public void setPedestrian(LightColor le){
 		pedestrianTL.setState(le);
 	}
 	

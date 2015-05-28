@@ -12,7 +12,7 @@ public class PedestrianLight {
 	private String greenPath = "images/pietonVert.png";
 	private Image redLight;
 	private Image greenLight;
-	private LightEnum state;
+	private LightColor state;
 	private Boolean t = true;
 	
 	
@@ -24,7 +24,7 @@ public class PedestrianLight {
 		this.orientation = orientation;
 		redLight = new Image(redPath);
 		greenLight = new Image(greenPath);
-		state = LightEnum.RED;
+		state = LightColor.RED;
 	}
 	
 	public int getX() {
@@ -39,11 +39,11 @@ public class PedestrianLight {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public LightEnum getState() {
+	public LightColor getState() {
 		return state;
 	}
 
-	public void setState(LightEnum state) {
+	public void setState(LightColor state) {
 		this.state = state;
 	}
 
@@ -55,7 +55,7 @@ public class PedestrianLight {
 	}
 
 	public Image getLight() {
-		if (state == LightEnum.RED)
+		if (state == LightColor.RED)
 			return redLight;
 		else
 			return greenLight;
