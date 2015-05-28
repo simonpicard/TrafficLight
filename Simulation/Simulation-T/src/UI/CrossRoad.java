@@ -28,6 +28,18 @@ public class CrossRoad {
 		roads.add(new Road(Orientation.EAST));
 	}
 	
+	public LightEnum getState(Orientation o){
+		switch(o){
+		case EAST:
+			return upTLE.getState();
+		case SOUTH:
+			return upTLS.getState();
+		case WEST:
+			return upTLW.getState();
+		}
+		return null;
+	}
+	
 
 	
 	public void draw(){
@@ -44,16 +56,18 @@ public class CrossRoad {
 			r.update();
 	}
 	
-	public void setLeft(LightEnum le){
-		upTLE.setState(le);
-	}
-	
-	public void setRight(LightEnum le){
-		upTLW.setState(le);
-	}
-	
-	public void setUp(LightEnum le){
-		upTLS.setState(le);
+	public void setTL(LightEnum le, Orientation o){
+		switch(o){
+		case EAST:
+			upTLE.setState(le);
+			break;
+		case SOUTH:
+			upTLS.setState(le);
+			break;
+		case WEST:
+			upTLW.setState(le);
+			break;
+		}
 	}
 	
 	public void setPedestrian(LightEnum le){
@@ -86,6 +100,14 @@ public class CrossRoad {
 			roads.get(2).removeCar();
 			break;
 		}
+	}
+	
+	public void addPedestrian(Direction d) throws SlickException{
+		roads.get(2).addPedestrian(d);
+	}
+	
+	public void removePedestrian(Direction d) throws SlickException{
+		roads.get(2).removePedestrian(d);
 	}
 
 }
