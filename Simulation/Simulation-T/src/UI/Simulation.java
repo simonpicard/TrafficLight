@@ -35,6 +35,7 @@ public class Simulation extends BasicGame {
 	long tick = 0;
 	long wait = 0;
 	private ArrayList<ArrayList<Action>> actions;
+	int current = 0;
 
 	// orientation 0: nord; 1: ouest; 2: sud; 3:est
 
@@ -49,13 +50,13 @@ public class Simulation extends BasicGame {
 		background = new Image("images/roadT.png");
 		cr = new CrossRoad();
 		setSpeed(3);
-		background.draw();
 		
 		
 	}
 
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
+		background.draw();
 		cr.draw();
 	}
 	
@@ -65,8 +66,8 @@ public class Simulation extends BasicGame {
 		//System.out.print(tick);
 		//System.out.print(" - ");
 		//System.out.println(wait);
-		if (tick >= wait){
-			doAction();
+		if (tick >= wait && current < actions.size()){
+			doActions();
 		}
 		tick++;
 	}
@@ -106,77 +107,35 @@ public class Simulation extends BasicGame {
 		container.setMinimumLogicUpdateInterval(s);
 	}
 	
-	private void doAction(){
-		
+	private void doActions() throws SlickException{
+		for (Action a : actions.get(current))
+			doAction(a);
+		current++;
+		wait = tick + 500;
 	}
 	
-	
-	public void simulate(ArrayList<String> query) throws SlickException, InterruptedException{
-		//0: PROCESS
-		//0: FROM
-		//1: TO
-		//2 : GUARD
-		//3: SYNCHRONISATION
-		//4: UPDATE
-		//System.out.println(query);
-		//System.out.println(query);
-		switch (query.get(0)){
-		case  "CarGeneratorEast":
-			simulateCarGenerator(query, Orientation.EAST);
+	private void doAction(Action a) throws SlickException{
+		switch(a.getAction()){
+		case "addCar":
+			cr.addCar(a.getOrientation(), a.getDirection());
 			break;
-		case  "CarGeneratorSouth":
-			simulateCarGenerator(query, Orientation.SOUTH);
+		case "removeCar":
+			cr.removeCar(a.getOrientation());
 			break;
-		case  "CarGeneratorWest":
-			simulateCarGenerator(query, Orientation.WEST);
-			break;
-		case "PedestrianGeneratorEast":
-			simulatePedestrianGenerator(query);
-			break;
-		}
-		
-	}
-	
-	private void simulateCarGenerator(ArrayList<String> query, Orientation o) throws SlickException, InterruptedException{
-		String tmp;
-		switch (query.get(1)){
-		case "AcceptCar":
-			if (query.get(2).equals("AcceptCar")){
-				tmp = query.get(5).split(",")[0];
-				tmp = tmp.split(" ")[2];
-				switch(tmp){
-				case "L":
-					cr.addCar(o, Direction.LEFT);
-					break;
-				case "U":
-					cr.addCar(o, Direction.UP);
-					break;
-				case "R":
-					cr.addCar(o, Direction.RIGHT);
-					break;
-				}
-			}
-			if (query.get(2).equals("CarCrossing")){
-				cr.setTL(LightEnum.GREEN, o);
-				cr.removeCar(o);
-				wait = tick + 500;
-			}
-			break;
-		}
-	}
-	
-	private void simulatePedestrianGenerator(ArrayList<String> query) throws SlickException, InterruptedException{
-		String tmp;
-		switch (query.get(2)){
-		case "PushButton":
+		case "addPedestrian":
 			cr.addPedestrian(Direction.LEFT);
-		break;
-		case "Cross":
-			cr.setPedestrian(LightEnum.GREEN);
+			break;
+		case "removePedestrian":
 			cr.removePedestrian(Direction.LEFT);
-			wait = tick + 500;
-		break;
+			break;
+		case "setTL":
+			cr.setTL(a.getLightColor(), a.getOrientation());
+			break;
+		case "setPedestrian":
+			cr.setPedestrian(a.getLightColor());
+			break;
 		}
 	}
+	
 
 }
