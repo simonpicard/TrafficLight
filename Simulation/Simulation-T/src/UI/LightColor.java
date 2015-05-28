@@ -1,5 +1,5 @@
 package UI;
 
-public enum LightEnum {
+public enum LightColor {
 	RED, ORANGE, GREEN
 }

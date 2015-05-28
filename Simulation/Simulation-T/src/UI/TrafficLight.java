@@ -14,7 +14,7 @@ public abstract class TrafficLight {
 	protected Image greenLight;
 	protected Image orangeLight;
 	protected Image redLight;
-	protected LightEnum state;
+	protected LightColor state;
 	private boolean t = true;
 	
 	
@@ -32,7 +32,7 @@ public abstract class TrafficLight {
 		greenLight.setCenterOfRotation(0, 0);
 		orangeLight.setCenterOfRotation(0, 0);
 		rotateLights();
-		state = LightEnum.RED;
+		state = LightColor.RED;
 	}
 	
 	
@@ -48,11 +48,11 @@ public abstract class TrafficLight {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public LightEnum getState() {
+	public LightColor getState() {
 		return state;
 	}
 
-	public void setState(LightEnum state) {
+	public void setState(LightColor state) {
 		this.state = state;
 	}
 

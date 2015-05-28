@@ -109,7 +109,7 @@ public class Parser {
 	
 	private void nextAction(){
 		actions.add(current);
-		System.out.println(current);
+		//System.out.println(current);
 		current = new ArrayList<Action>();
 	}
 	
@@ -163,14 +163,14 @@ public class Parser {
 			if (query.get(2).equals("CarCrossing")){
 				if (!(current.size() == 1 && (current.get(0).getAction() == "setTL" || current.get(0).getAction() == "setPedestrian")))
 					nextAction();
-				current.add(new Action("setTL", o, LightEnum.GREEN));
+				current.add(new Action("setTL", o, LightColor.GREEN));
 				current.add(new Action("removeCar", o));
 			}
 			break;
 		case "TakeDecision":
 			if (query.get(2).equals("AcceptCar")){
 				nextAction();
-				current.add(new Action("setTL", o, LightEnum.RED));
+				current.add(new Action("setTL", o, LightColor.RED));
 			}
 			break;
 		}
@@ -183,12 +183,12 @@ public class Parser {
 		break;
 		case "Cross":
 			nextAction();
-			current.add(new Action("setPedestrian", LightEnum.GREEN));
+			current.add(new Action("setPedestrian", LightColor.GREEN));
 			current.add(new Action("removePedestrian"));
 		break;
 		case "Empty":
 			nextAction();
-			current.add(new Action("setPedestrian", LightEnum.RED));
+			current.add(new Action("setPedestrian", LightColor.RED));
 			break;
 		}
 	}

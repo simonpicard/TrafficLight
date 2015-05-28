@@ -92,8 +92,8 @@ public class Simulation extends BasicGame {
 			case Input.KEY_T: cr.addPedestrian(Direction.RIGHT); break;
 			case Input.KEY_F: cr.removePedestrian(Direction.LEFT); break;
 			case Input.KEY_G: cr.removePedestrian(Direction.RIGHT); break;
-			case Input.KEY_Y: cr.setTL(LightEnum.GREEN, Orientation.EAST); break;
-			case Input.KEY_U: cr.setTL(LightEnum.RED, Orientation.EAST); break;
+			case Input.KEY_Y: cr.setTL(LightColor.GREEN, Orientation.EAST); break;
+			case Input.KEY_U: cr.setTL(LightColor.RED, Orientation.EAST); break;
 			}
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
