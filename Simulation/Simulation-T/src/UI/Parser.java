@@ -153,15 +153,16 @@ public class Parser {
 					current.add(new Action("addCar", o, Direction.LEFT));
 					break;
 				case "U":
-					current.add(new Action("addCar", o, Direction.LEFT));
+					current.add(new Action("addCar", o, Direction.UP));
 					break;
 				case "R":
-					current.add(new Action("addCar", o, Direction.LEFT));
+					current.add(new Action("addCar", o, Direction.RIGHT));
 					break;
 				}
 			}
 			if (query.get(2).equals("CarCrossing")){
-				nextAction();
+				if (!(current.size() == 1 && (current.get(0).getAction() == "setTL" || current.get(0).getAction() == "setPedestrian")))
+					nextAction();
 				current.add(new Action("setTL", o, LightEnum.GREEN));
 				current.add(new Action("removeCar", o));
 			}
