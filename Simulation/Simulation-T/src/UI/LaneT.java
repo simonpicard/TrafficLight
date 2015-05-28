@@ -27,7 +27,7 @@ public class LaneT {
 	
 	public void addCar(Direction lane) throws SlickException{
 		if (orientation == Orientation.WEST && lane != Direction.LEFT || orientation == Orientation.SOUTH && lane != Direction.UP || orientation == Orientation.EAST && lane != Direction.RIGHT){
-			cars.add(new Car(4, 400, orientation));
+			cars.add(new Car(4, 400+nb*(carSize+2), orientation));
 			nb ++;
 			directions.add(lane);
 		}

@@ -20,10 +20,12 @@ public class Parser {
 	
 	private ArrayList<ArrayList<Action>> actions = new ArrayList<ArrayList<Action>>();
 	private ArrayList<Action> current = new ArrayList<Action>();
+	private ArrayList<Action> next = new ArrayList<Action>();
 	
 	public Parser(String pathIn, String pathOut){
 		replaceRegex(pathIn, pathOut);
 		parseFile(pathOut);
+		actions.add(next);
 	}
 
 	
@@ -38,8 +40,7 @@ public class Parser {
 		Pattern p1 = Pattern.compile("State: [^\n]*");
 		Pattern p2 = Pattern.compile("^\n");
 		Pattern p3 = Pattern.compile("Transition: ");
-		Pattern p4 = Pattern.compile(" $" +
-				"");
+		Pattern p4 = Pattern.compile(" $");
 		Pattern p5 = Pattern.compile("\\} ");
 		//Pattern p6 = Pattern.compile("\{[^\{\}]*\}");
 		
@@ -108,9 +109,12 @@ public class Parser {
 	}
 	
 	private void nextAction(){
+		if (current.size() > 0){
 		actions.add(current);
-		//System.out.println(current);
-		current = new ArrayList<Action>();
+		System.out.println(current);
+		current = next;
+		next = new ArrayList<Action>();
+		}
 	}
 	
 	
@@ -137,6 +141,10 @@ public class Parser {
 		case "PedestrianGeneratorEast":
 			simulatePedestrianGenerator(query);
 			break;
+		case "LightController1":
+			if (query.get(2).equals("Initial"))
+				nextAction();
+			break;
 		}
 		
 	}
@@ -160,17 +168,14 @@ public class Parser {
 					break;
 				}
 			}
-			if (query.get(2).equals("CarCrossing")){
-				if (!(current.size() == 1 && (current.get(0).getAction() == "setTL" || current.get(0).getAction() == "setPedestrian")))
-					nextAction();
+			if (query.get(2).equals("LightGreen")){
 				current.add(new Action("setTL", o, LightColor.GREEN));
 				current.add(new Action("removeCar", o));
 			}
 			break;
 		case "TakeDecision":
 			if (query.get(2).equals("AcceptCar")){
-				nextAction();
-				current.add(new Action("setTL", o, LightColor.RED));
+				next.add(new Action("setTL", o, LightColor.RED));
 			}
 			break;
 		}
@@ -182,13 +187,11 @@ public class Parser {
 			current.add(new Action("addPedestrian"));
 		break;
 		case "Cross":
-			nextAction();
 			current.add(new Action("setPedestrian", LightColor.GREEN));
 			current.add(new Action("removePedestrian"));
 		break;
 		case "Empty":
-			nextAction();
-			current.add(new Action("setPedestrian", LightColor.RED));
+			next.add(new Action("setPedestrian", LightColor.RED));
 			break;
 		}
 	}
