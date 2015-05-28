@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+const int E=0, S=1, W=2, P=3;
+const int L=0, U=1, R=2;
+const bool RED=false, GREEN=true;
+const int PEDESTRIAN_CROSSING_TIME=3;
+const int CAR_CROSSING_TIME=3;
+
+bool pedestrianCrossingButton = false;
+bool pedestrianLight = RED;
+bool carLight[3] = {RED, RED, RED};
+
+const int QUEUE_SIZE=2;
+int[0,2] queue[3][QUEUE_SIZE];
+int[0,QUEUE_SIZE] queueIndex[3] = {0, 0, 0};
+
+const int URGENT_QUEUE_SIZE=4;
+int[0,3] urgentQueue[URGENT_QUEUE_SIZE];
+int[0,URGENT_QUEUE_SIZE] urgentQueueIndex=0;
+const int MAX_WAITING_TIME=50;
+
+
+const int MAX_GEN_NUMBER[4] = {2, 1, 1, 2};</declaration>
+	<template>
+		<name x="5" y="5">PedestrianGenerator</name>
+		<parameter>chan &amp;request, broadcast chan &amp;release, chan &amp;pedestrianLightGreen</parameter>
+		<declaration>clock crossingTime;
+int[0,2] genNumber = 0;</declaration>
+		<location id="id0" x="8" y="-112">
+			<name x="32" y="-128">Cross</name>
+			<label kind="invariant" x="32" y="-112">crossingTime&lt;=PEDESTRIAN_CROSSING_TIME</label>
+		</location>
+		<location id="id1" x="-484" y="-110">
+			<name x="-532" y="-150">PushButton</name>
+		</location>
+		<location id="id2" x="-952" y="-110">
+			<name x="-968" y="-150">Empty</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-527" y="68">crossingTime&gt;=PEDESTRIAN_CROSSING_TIME</label>
+			<label kind="synchronisation" x="-527" y="85">release!</label>
+			<label kind="assignment" x="-527" y="102">pedestrianCrossingButton = false</label>
+			<nail x="-476" y="59"/>
+		</transition>
+		<transition controllable="false">
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-918" y="-144">genNumber!=MAX_GEN_NUMBER[P]</label>
+			<label kind="synchronisation" x="-816" y="-128">request!</label>
+			<label kind="assignment" x="-880" y="-112">pedestrianCrossingButton = true,
+genNumber++</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-391" y="-153">pedestrianLightGreen?</label>
+			<label kind="assignment" x="-374" y="-136">crossingTime=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>LightController</name>
+		<parameter>chan &amp;lightGreen[4],  chan &amp;request[4], broadcast chan &amp;release[4]</parameter>
+		<declaration>clock x;
+const int MAX_WAITING_TIME = 30;
+
+//int[0,3] maxClock() {
+//    int[0,3] max_clock = waitingTime[0];
+//    int[0,3] loc = 0;
+//    for (loc = 1; loc&lt;4; loc++) {
+//        if (waitingTime[loc] &gt; max_clock) {
+//            max_clock = loc;
+//        }
+//    }
+//    return max_clock;
+//}</declaration>
+		<location id="id3" x="-153" y="-2652">
+			<name x="-238" y="-2686">UrgentPedestrianRed</name>
+			<label kind="invariant" x="-246" y="-2635">x&lt;=PEDESTRIAN_CROSSING_TIME</label>
+		</location>
+		<location id="id4" x="-136" y="-2507">
+			<name x="-195" y="-2541">UrgentCarEastRed</name>
+			<label kind="invariant" x="-221" y="-2482">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id5" x="-144" y="-2303">
+			<name x="-221" y="-2346">UrgentCarSouthRed</name>
+			<label kind="invariant" x="-229" y="-2286">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id6" x="-136" y="-2108">
+			<name x="-187" y="-2142">UrgentCarWestRed</name>
+			<label kind="invariant" x="-221" y="-2091">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id7" x="-748" y="-2108">
+			<name x="-758" y="-2142">UrgentCarWestGreen</name>
+			<label kind="invariant" x="-799" y="-2091">x&lt;=QUEUE_SIZE*CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id8" x="-756" y="-2295">
+			<name x="-766" y="-2329">UrgentCarSouthGreen</name>
+			<label kind="invariant" x="-833" y="-2278">x&lt;=QUEUE_SIZE*CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id9" x="-765" y="-2473">
+			<name x="-775" y="-2507">UrgentCarEastGreen</name>
+			<label kind="invariant" x="-816" y="-2456">x&lt;=QUEUE_SIZE*CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id10" x="-782" y="-2635">
+			<name x="-792" y="-2669">UrgentPedestrianGreen</name>
+			<label kind="invariant" x="-909" y="-2618">x&lt;=PEDESTRIAN_CROSSING_TIME</label>
+		</location>
+		<location id="id11" x="-1198" y="-2261">
+			<name x="-1309" y="-2295">TakeUrgentDecision</name>
+			<committed/>
+		</location>
+		<location id="id12" x="-238" y="-994">
+			<name x="-248" y="-1028">CarWestRed</name>
+			<label kind="invariant" x="-248" y="-977">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id13" x="-255" y="-1309">
+			<name x="-265" y="-1343">CarSouthRed</name>
+			<label kind="invariant" x="-265" y="-1292">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id14" x="-255" y="-1504">
+			<name x="-265" y="-1538">CarEastRed</name>
+			<label kind="invariant" x="-265" y="-1487">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id15" x="-578" y="-994">
+			<name x="-588" y="-1028">CarWestGreen</name>
+			<label kind="invariant" x="-588" y="-977">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id16" x="-569" y="-1309">
+			<name x="-579" y="-1343">CarSouthGreen</name>
+			<label kind="invariant" x="-579" y="-1292">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id17" x="-697" y="-1504">
+			<name x="-707" y="-1538">CarEastGreen</name>
+			<label kind="invariant" x="-707" y="-1487">x&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id18" x="-1104" y="-1119">
+			<name x="-1140" y="-1153">CarCrossing</name>
+			<committed/>
+		</location>
+		<location id="id19" x="-1104" y="-813">
+			<name x="-1087" y="-838">PedestrianRed</name>
+			<label kind="invariant" x="-1087" y="-813">x&lt;=PEDESTRIAN_CROSSING_TIME</label>
+		</location>
+		<location id="id20" x="-1104" y="-966">
+			<name x="-1113" y="-1020">PedestrianGreen</name>
+			<label kind="invariant" x="-1122" y="-1003">x&lt;=PEDESTRIAN_CROSSING_TIME</label>
+		</location>
+		<location id="id21" x="-1504" y="-969">
+			<name x="-1536" y="-1001">TakeDecision</name>
+			<committed/>
+		</location>
+		<location id="id22" x="-2261" y="-994">
+			<name x="-2271" y="-1024">Initial</name>
+			<label kind="invariant" x="-2271" y="-977">x&lt;=1</label>
+		</location>
+		<init ref="id22"/>
+		<transition>
+			<source ref="id22"/>
+			<target ref="id21"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-561" y="-2703">release[P]?</label>
+			<label kind="assignment" x="-561" y="-2686">x=0,
+pedestrianLight=RED</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-544" y="-2550">release[E]?</label>
+			<label kind="assignment" x="-544" y="-2533">x=0,
+carLight[E]=RED</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-510" y="-2363">release[S]?</label>
+			<label kind="assignment" x="-510" y="-2346">x=0,
+carLight[S]=RED</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-195" y="-2745">x==PEDESTRIAN_CROSSING_TIME</label>
+			<label kind="assignment" x="-42" y="-2711">x=0</label>
+			<nail x="42" y="-2652"/>
+			<nail x="42" y="-2762"/>
+			<nail x="-2261" y="-2762"/>
+			<nail x="-2303" y="-1054"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-110" y="-2584">x==CAR_CROSSING_TIME</label>
+			<label kind="assignment" x="-25" y="-2550">x=0</label>
+			<nail x="68" y="-2507"/>
+			<nail x="68" y="-2788"/>
+			<nail x="-2286" y="-2788"/>
+			<nail x="-2320" y="-1003"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-93" y="-2414">x==CAR_CROSSING_TIME</label>
+			<label kind="assignment" x="8" y="-2380">x=0</label>
+			<nail x="93" y="-2303"/>
+			<nail x="93" y="-2813"/>
+			<nail x="-2312" y="-2813"/>
+			<nail x="-2337" y="-969"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id22"/>
+			<label kind="guard" x="8" y="-2167">x==CAR_CROSSING_TIME</label>
+			<label kind="assignment" x="85" y="-2133">x=0</label>
+			<nail x="110" y="-2108"/>
+			<nail x="110" y="-2839"/>
+			<nail x="-1717" y="-2839"/>
+			<nail x="-2337" y="-2839"/>
+			<nail x="-2354" y="-943"/>
+			<nail x="-2278" y="-943"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-493" y="-2176">release[W]?</label>
+			<label kind="assignment" x="-493" y="-2159">x=0,
+carLight[W]=RED</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-977" y="-2150">urgentQueue[0]==W</label>
+			<label kind="synchronisation" x="-977" y="-2133">lightGreen[W]!</label>
+			<label kind="assignment" x="-977" y="-2116">pedestrianLight=RED,
+carLight[E]=RED,
+carLight[S]=RED,
+carLight[W]=GREEN,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-977" y="-2312">urgentQueue[0]==S</label>
+			<label kind="synchronisation" x="-986" y="-2295">lightGreen[S]!</label>
+			<label kind="assignment" x="-986" y="-2278">pedestrianLight=RED,
+carLight[E]=RED,
+carLight[S]=GREEN,
+carLight[W]=RED,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-969" y="-2456">urgentQueue[0]==E</label>
+			<label kind="synchronisation" x="-969" y="-2439">lightGreen[E]!</label>
+			<label kind="assignment" x="-969" y="-2422">pedestrianLight=RED,
+carLight[E]=GREEN,
+carLight[S]=RED,
+carLight[W]=RED,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-1045" y="-2592">urgentQueue[0]==P</label>
+			<label kind="synchronisation" x="-1045" y="-2575">lightGreen[P]!</label>
+			<label kind="assignment" x="-1045" y="-2558">pedestrianLight=GREEN,
+carLight[E]=RED,
+carLight[S]=RED,
+carLight[W]=RED,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-1360" y="-1215">urgentQueueIndex!=0</label>
+			<nail x="-1249" y="-1249"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-119" y="-1028">x==CAR_CROSSING_TIME</label>
+			<label kind="assignment" x="-42" y="-994">x=0</label>
+			<nail x="51" y="-994"/>
+			<nail x="42" y="-688"/>
+			<nail x="-1725" y="-688"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-110" y="-1343">x==CAR_CROSSING_TIME</label>
+			<label kind="assignment" x="-34" y="-1309">x=0</label>
+			<nail x="102" y="-1309"/>
+			<nail x="93" y="-629"/>
+			<nail x="-1793" y="-629"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-119" y="-1538">x==CAR_CROSSING_TIME</label>
+			<label kind="assignment" x="-42" y="-1504">x=0</label>
+			<nail x="119" y="-1504"/>
+			<nail x="119" y="-595"/>
+			<nail x="-1844" y="-595"/>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-476" y="-1062">release[W]?</label>
+			<label kind="assignment" x="-476" y="-1045">x=0,
+carLight[W]=RED</label>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-450" y="-1377">release[S]?</label>
+			<label kind="assignment" x="-450" y="-1360">x=0,
+carLight[S]=RED</label>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-518" y="-1564">release[E]?</label>
+			<label kind="assignment" x="-518" y="-1547">x=0,
+carLight[E]=RED</label>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id15"/>
+			<label kind="guard" x="-960" y="-1130">not(queueIndex[E]!=0 || queueIndex[E]!=0) &amp;&amp; queueIndex[W]!=0</label>
+			<label kind="synchronisation" x="-841" y="-1113">lightGreen[W]!</label>
+			<label kind="assignment" x="-841" y="-1096">carLight[W]=GREEN,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id16"/>
+			<label kind="guard" x="-901" y="-1292">not(queueIndex[E]!=0) &amp;&amp; queueIndex[S]!=0</label>
+			<label kind="synchronisation" x="-858" y="-1275">lightGreen[S]!</label>
+			<label kind="assignment" x="-859" y="-1258">carLight[S]=GREEN,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id17"/>
+			<label kind="guard" x="-926" y="-1453">queueIndex[E]!=0</label>
+			<label kind="synchronisation" x="-935" y="-1436">lightGreen[E]!</label>
+			<label kind="assignment" x="-935" y="-1419">carLight[E]=GREEN,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id18"/>
+			<label kind="guard" x="-1326" y="-1105">urgentQueueIndex==0 &amp;&amp;
+pedestrianCrossingButton==false &amp;&amp;
+(queueIndex[E]!=0 || queueIndex[S]!=0 || queueIndex[W]!=0)</label>
+		</transition>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-1589" y="-804">x==PEDESTRIAN_CROSSING_TIME</label>
+			<label kind="assignment" x="-1487" y="-773">x=0</label>
+			<nail x="-1725" y="-813"/>
+		</transition>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-1104" y="-906">release[P]?</label>
+			<label kind="assignment" x="-1096" y="-889">x=0,
+pedestrianLight=RED</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id20"/>
+			<label kind="guard" x="-1377" y="-1020">urgentQueueIndex==0 &amp;&amp;
+pedestrianCrossingButton==true</label>
+			<label kind="synchronisation" x="-1368" y="-986">lightGreen[P]!</label>
+			<label kind="assignment" x="-1410" y="-966">pedestrianLight=GREEN,
+x=0</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id22"/>
+			<label kind="guard" x="-1759" y="-901">not(urgentQueueIndex!=0 ||
+pedestrianCrossingButton==true ||
+(queueIndex[E]!=0 || queueIndex[S]!=0 || queueIndex[W]!=0))</label>
+			<label kind="assignment" x="-1742" y="-918">x=0</label>
+			<nail x="-1592" y="-905"/>
+		</transition>
+	</template>
+	<template>
+		<name>Timer</name>
+		<parameter>int[0,3] location, const int max_waiting_time,  chan &amp;request, broadcast chan &amp;release</parameter>
+		<declaration>clock waitingTime;</declaration>
+		<location id="id23" x="-425" y="289">
+			<name x="-459" y="255">WaitingTooMuch2</name>
+		</location>
+		<location id="id24" x="-901" y="289">
+			<name x="-935" y="256">WaitingTooMuch1</name>
+		</location>
+		<location id="id25" x="-425" y="34">
+			<name x="-485" y="-8">NotWaitingTooMuch2</name>
+			<label kind="invariant" x="-510" y="51">waitingTime&lt;=max_waiting_time</label>
+		</location>
+		<location id="id26" x="-901" y="34">
+			<name x="-926" y="-8">NotWaitingTooMuch1</name>
+			<label kind="invariant" x="-986" y="42">waitingTime&lt;=max_waiting_time</label>
+		</location>
+		<location id="id27" x="-1368" y="34">
+			<name x="-1402" y="0">NotWaiting</name>
+		</location>
+		<init ref="id27"/>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id23"/>
+			<label kind="synchronisation" x="-773" y="263">request?</label>
+		</transition>
+		<transition>
+			<source ref="id25"/>
+			<target ref="id26"/>
+			<label kind="synchronisation" x="-705" y="-144">release?</label>
+			<label kind="assignment" x="-705" y="-127">waitingTime=0</label>
+			<nail x="-663" y="-102"/>
+		</transition>
+		<transition>
+			<source ref="id26"/>
+			<target ref="id27"/>
+			<label kind="synchronisation" x="-1156" y="-102">release?</label>
+			<nail x="-1122" y="-85"/>
+		</transition>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id27"/>
+			<label kind="synchronisation" x="-1207" y="161">release?</label>
+			<label kind="assignment" x="-1283" y="178">urgentQueue[0]=urgentQueue[1],
+urgentQueue[1]=urgentQueue[2],
+urgentQueue[2]=urgentQueue[3],
+urgentQueueIndex--</label>
+		</transition>
+		<transition>
+			<source ref="id23"/>
+			<target ref="id26"/>
+			<label kind="synchronisation" x="-697" y="93">release?</label>
+			<label kind="assignment" x="-773" y="110">urgentQueue[0]=urgentQueue[1],
+urgentQueue[1]=urgentQueue[2],
+urgentQueue[2]=urgentQueue[3],
+urgentQueueIndex--,
+waitingTime=0</label>
+		</transition>
+		<transition>
+			<source ref="id25"/>
+			<target ref="id23"/>
+			<label kind="guard" x="-518" y="119">waitingTime==max_waiting_time</label>
+			<label kind="assignment" x="-518" y="136">urgentQueue[urgentQueueIndex]=location,
+urgentQueueIndex++</label>
+		</transition>
+		<transition>
+			<source ref="id26"/>
+			<target ref="id24"/>
+			<label kind="guard" x="-1071" y="93">waitingTime==max_waiting_time</label>
+			<label kind="assignment" x="-1079" y="110">urgentQueue[urgentQueueIndex]=location,
+urgentQueueIndex++</label>
+		</transition>
+		<transition>
+			<source ref="id26"/>
+			<target ref="id25"/>
+			<label kind="synchronisation" x="-705" y="8">request?</label>
+		</transition>
+		<transition>
+			<source ref="id27"/>
+			<target ref="id26"/>
+			<label kind="synchronisation" x="-1164" y="-9">request?</label>
+			<label kind="assignment" x="-1164" y="8">waitingTime=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>CarGenerator</name>
+		<parameter>int[0,2] location, chan &amp;request, broadcast chan &amp;release, chan &amp;carLightGreen</parameter>
+		<declaration>clock crossingTime;
+int[0,2] genNumber = 0;</declaration>
+		<location id="id28" x="-977" y="76">
+			<name x="-1037" y="93">TakeDecision</name>
+			<committed/>
+		</location>
+		<location id="id29" x="-688" y="-192">
+			<name x="-712" y="-224">CarCrossing</name>
+			<label kind="invariant" x="-672" y="-192">crossingTime&lt;=CAR_CROSSING_TIME</label>
+		</location>
+		<location id="id30" x="-1168" y="-192">
+			<name x="-1156" y="-221">AcceptCar</name>
+		</location>
+		<init ref="id30"/>
+		<transition>
+			<source ref="id29"/>
+			<target ref="id28"/>
+			<label kind="guard" x="-773" y="-8">crossingTime&gt;=CAR_CROSSING_TIME</label>
+			<label kind="synchronisation" x="-765" y="8">release!</label>
+			<label kind="assignment" x="-765" y="25">queue[location][0]=queue[location][1],
+queueIndex[location]--</label>
+			<nail x="-680" y="76"/>
+		</transition>
+		<transition>
+			<source ref="id28"/>
+			<target ref="id30"/>
+			<label kind="guard" x="-1164" y="-76">carLight[location]!=GREEN ||
+queueIndex[location]==0</label>
+		</transition>
+		<transition>
+			<source ref="id28"/>
+			<target ref="id29"/>
+			<label kind="guard" x="-909" y="-93">carLight[location]==GREEN &amp;&amp;
+queueIndex[location]!=0</label>
+			<label kind="assignment" x="-892" y="-59">crossingTime=0</label>
+		</transition>
+		<transition>
+			<source ref="id30"/>
+			<target ref="id29"/>
+			<label kind="synchronisation" x="-1028" y="-229">carLightGreen?</label>
+			<label kind="assignment" x="-1028" y="-212">crossingTime=0</label>
+		</transition>
+		<transition controllable="false">
+			<source ref="id30"/>
+			<target ref="id30"/>
+			<label kind="guard" x="-1841" y="-172">carLight[location]!=GREEN &amp;&amp; queueIndex[location]!=QUEUE_SIZE &amp;&amp; location != W
+&amp;&amp;genNumber!=MAX_GEN_NUMBER[location]</label>
+			<label kind="synchronisation" x="-1518" y="-189">request!</label>
+			<label kind="assignment" x="-1589" y="-136">queue[location][queueIndex[location]]=L,
+queueIndex[location]++,
+genNumber++</label>
+			<nail x="-1288" y="-216"/>
+			<nail x="-1272" y="-128"/>
+		</transition>
+		<transition controllable="false">
+			<source ref="id30"/>
+			<target ref="id30"/>
+			<label kind="guard" x="-1802" y="-306">carLight[location]!=GREEN &amp;&amp; queueIndex[location]!=QUEUE_SIZE &amp;&amp; location != S
+&amp;&amp;genNumber!=MAX_GEN_NUMBER[location]</label>
+			<label kind="synchronisation" x="-1513" y="-323">request!</label>
+			<label kind="assignment" x="-1560" y="-272">queue[location][queueIndex[location]]=U,
+queueIndex[location]++,
+genNumber++</label>
+			<nail x="-1216" y="-312"/>
+			<nail x="-1280" y="-240"/>
+		</transition>
+		<transition controllable="false">
+			<source ref="id30"/>
+			<target ref="id30"/>
+			<label kind="guard" x="-1445" y="-399">carLight[location]!=GREEN &amp;&amp; queueIndex[location]!=QUEUE_SIZE  &amp;&amp; location != E
+&amp;&amp;genNumber!=MAX_GEN_NUMBER[location]</label>
+			<label kind="synchronisation" x="-1198" y="-425">request!</label>
+			<label kind="assignment" x="-1264" y="-360">queue[location][queueIndex[location]]=R,
+queueIndex[location]++,
+genNumber++</label>
+			<nail x="-1200" y="-320"/>
+			<nail x="-1088" y="-320"/>
+		</transition>
+	</template>
+	<system>// channels when lights go green (E, S, W, P)
+chan lightGreen[4];
+// channels for requesting access and releasing crossing
+chan request[4];
+broadcast chan release[4];
+
+PedestrianGeneratorEast = PedestrianGenerator(request[P], release[P], lightGreen[P]);
+
+CarGeneratorEast = CarGenerator(E, request[E], release[E], lightGreen[E]);
+CarGeneratorSouth = CarGenerator(S, request[S], release[S], lightGreen[S]);
+CarGeneratorWest = CarGenerator(W, request[W], release[W], lightGreen[W]);
+
+LightController1 = LightController(lightGreen, request, release);
+
+TimerPedestrian = Timer(P, MAX_WAITING_TIME, request[P], release[P]);
+TimerEast = Timer(E, MAX_WAITING_TIME, request[E], release[E]);
+TimerSouth = Timer(S, MAX_WAITING_TIME, request[S], release[S]);
+TimerWest = Timer(W, MAX_WAITING_TIME, request[W], release[W]);
+
+system PedestrianGeneratorEast,
+CarGeneratorEast, CarGeneratorSouth, CarGeneratorWest,
+TimerPedestrian, TimerEast, TimerSouth, TimerWest,
+LightController1;</system>
+	<queries>
+		<query>
+			<formula>PedestrianGeneratorEast.PushButton --&gt;PedestrianGeneratorEast.Cross
+			</formula>
+			<comment>1
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not (pedestrianLight == GREEN &amp;&amp; (carLight[E] == GREEN || (carLight[W] == GREEN &amp;&amp; queue[W][0] == U) || (carLight[S] == GREEN &amp;&amp; queue[S][0] == R)))
+			</formula>
+			<comment>2
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not (PedestrianGeneratorEast.Cross &amp;&amp; (CarGeneratorEast.CarCrossing || CarGeneratorWest.CarCrossing &amp;&amp; queue[W][0] == U || CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0]==R))
+			</formula>
+			<comment>2-BIS
+			</comment>
+		</query>
+		<query>
+			<formula>(CarGeneratorEast.AcceptCar&amp;&amp;queueIndex[E]!=0) --&gt; CarGeneratorEast.CarCrossing
+			</formula>
+			<comment>3.1
+			</comment>
+		</query>
+		<query>
+			<formula>(CarGeneratorSouth.AcceptCar&amp;&amp;queueIndex[S]!=0) --&gt; CarGeneratorSouth.CarCrossing
+			</formula>
+			<comment>3.2
+			</comment>
+		</query>
+		<query>
+			<formula>(CarGeneratorWest.AcceptCar&amp;&amp;queueIndex[W]!=0) --&gt; CarGeneratorWest.CarCrossing
+			</formula>
+			<comment>3.3
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not ((carLight[S] == GREEN &amp;&amp; queue[S][0] == L &amp;&amp; ((carLight[W] == GREEN &amp;&amp; queue[W][0] == U) || (carLight[E] == GREEN &amp;&amp; (queue[E][0] == L || queue[E][0] == U)) )) ||
+(carLight[S] == GREEN &amp;&amp; queue[S][0] == R &amp;&amp; carLight[W] == GREEN &amp;&amp; queue[W][0] == U) ||
+(carLight[W] == GREEN &amp;&amp; queue[W][0] == U &amp;&amp; ((carLight[E] == GREEN &amp;&amp; queue[E][0] == L) || (carLight[S] == GREEN &amp;&amp; (queue[S][0] == L || queue[S][0] == R)))) ||
+(carLight[W] == GREEN &amp;&amp; queue[W][0] == R &amp;&amp; carLight[E] == GREEN &amp;&amp; queue[E][0] == L) ||
+(carLight[E] == GREEN &amp;&amp; queue[E][0] == L &amp;&amp; ((carLight[S] == GREEN &amp;&amp; queue[S][0] == L) || (carLight[W] == GREEN &amp;&amp; (queue[W][0] == U || queue[W][0] == R)))) ||
+(carLight[E] == GREEN &amp;&amp; queue[E][0] == U &amp;&amp; carLight[S] == GREEN &amp;&amp; queue[S][0] == L))
+			</formula>
+			<comment>4
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not (CarGeneratorEast.CarCrossing &amp;&amp; ((CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == L) || (queue[E][0])==L &amp;&amp; CarGeneratorWest.CarCrossing) || CarGeneratorWest.CarCrossing &amp;&amp; CarGeneratorSouth.CarCrossing)
+			</formula>
+			<comment>4-BIS
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not ((CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == L &amp;&amp; ((CarGeneratorWest.CarCrossing &amp;&amp; queue[W][0] == U) || (CarGeneratorEast.CarCrossing &amp;&amp; (queue[E][0] == L || queue[E][0] == U)) )) ||
+(CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == R &amp;&amp; CarGeneratorWest.CarCrossing &amp;&amp; queue[W][0] == U) ||
+(CarGeneratorWest.CarCrossing &amp;&amp; queue[W][0] == U &amp;&amp; ((CarGeneratorEast.CarCrossing &amp;&amp; queue[E][0] == L) || (CarGeneratorSouth.CarCrossing &amp;&amp; (queue[S][0] == L || queue[S][0] == R)))) ||
+(CarGeneratorWest.CarCrossing &amp;&amp; queue[W][0] == R &amp;&amp; CarGeneratorEast.CarCrossing &amp;&amp; queue[E][0] == L) ||
+(CarGeneratorEast.CarCrossing &amp;&amp; queue[E][0] == L &amp;&amp; ((CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == L) || (CarGeneratorWest.CarCrossing &amp;&amp; (queue[W][0] == U || queue[W][0] == R)))) ||
+(CarGeneratorEast.CarCrossing &amp;&amp; queue[E][0] == U &amp;&amp; CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == L))
+			</formula>
+			<comment>4-TER
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not deadlock
+			</formula>
+			<comment>5
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not((queue[E][0]==R&amp;&amp;queueIndex[E]&gt;0) || (queue[S][0]==U&amp;&amp;queueIndex[S]&gt;0) || (queue[W][0]==L&amp;&amp;queueIndex[W]&gt;0))
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
