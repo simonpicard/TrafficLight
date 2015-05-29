@@ -931,37 +931,43 @@ LightController1;</system>
 		<query>
 			<formula>PedestrianGeneratorEast.PushButton --&gt;PedestrianGeneratorEast.Cross
 			</formula>
-			<comment>1
-			</comment>
-		</query>
-		<query>
-			<formula>A[] not (pedestrianLight == GREEN &amp;&amp; (carLight[E] == GREEN || (carLight[W] == GREEN &amp;&amp; queue[W][0] == U) || (carLight[S] == GREEN &amp;&amp; queue[S][0] == R)))
-			</formula>
-			<comment>2
-			</comment>
-		</query>
-		<query>
-			<formula>A[] not (PedestrianGeneratorEast.Cross &amp;&amp; (CarGeneratorEast.CarCrossing || CarGeneratorWest.CarCrossing &amp;&amp; queue[W][0] == U || CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0]==R))
-			</formula>
-			<comment>2-BIS
+			<comment>Liveness property 1
 			</comment>
 		</query>
 		<query>
 			<formula>(CarGeneratorEast.AcceptCar&amp;&amp;queueIndex[E]!=0) --&gt; CarGeneratorEast.CarCrossing
 			</formula>
-			<comment>3.1
+			<comment>Liveness property 2.a
 			</comment>
 		</query>
 		<query>
 			<formula>(CarGeneratorSouth.AcceptCar&amp;&amp;queueIndex[S]!=0) --&gt; CarGeneratorSouth.CarCrossing
 			</formula>
-			<comment>3.2
+			<comment>Liveness property 2.b
 			</comment>
 		</query>
 		<query>
 			<formula>(CarGeneratorWest.AcceptCar&amp;&amp;queueIndex[W]!=0) --&gt; CarGeneratorWest.CarCrossing
 			</formula>
-			<comment>3.3
+			<comment>Liveness property 2.c
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not deadlock
+			</formula>
+			<comment>Liveness property 3
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not (pedestrianLight == GREEN &amp;&amp; (carLight[E] == GREEN || (carLight[W] == GREEN &amp;&amp; queue[W][0] == U) || (carLight[S] == GREEN &amp;&amp; queue[S][0] == R)))
+			</formula>
+			<comment>Safety property 1
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not (PedestrianGeneratorEast.Cross &amp;&amp; (CarGeneratorEast.CarCrossing || CarGeneratorWest.CarCrossing &amp;&amp; queue[W][0] == U || CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0]==R))
+			</formula>
+			<comment>Safety property 2
 			</comment>
 		</query>
 		<query>
@@ -972,13 +978,7 @@ LightController1;</system>
 (carLight[E] == GREEN &amp;&amp; queue[E][0] == L &amp;&amp; ((carLight[S] == GREEN &amp;&amp; queue[S][0] == L) || (carLight[W] == GREEN &amp;&amp; (queue[W][0] == U || queue[W][0] == R)))) ||
 (carLight[E] == GREEN &amp;&amp; queue[E][0] == U &amp;&amp; carLight[S] == GREEN &amp;&amp; queue[S][0] == L))
 			</formula>
-			<comment>4
-			</comment>
-		</query>
-		<query>
-			<formula>A[] not (CarGeneratorEast.CarCrossing &amp;&amp; ((CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == L) || (queue[E][0])==L &amp;&amp; CarGeneratorWest.CarCrossing) || CarGeneratorWest.CarCrossing &amp;&amp; CarGeneratorSouth.CarCrossing)
-			</formula>
-			<comment>4-BIS
+			<comment>Safety property 3
 			</comment>
 		</query>
 		<query>
@@ -989,19 +989,7 @@ LightController1;</system>
 (CarGeneratorEast.CarCrossing &amp;&amp; queue[E][0] == L &amp;&amp; ((CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == L) || (CarGeneratorWest.CarCrossing &amp;&amp; (queue[W][0] == U || queue[W][0] == R)))) ||
 (CarGeneratorEast.CarCrossing &amp;&amp; queue[E][0] == U &amp;&amp; CarGeneratorSouth.CarCrossing &amp;&amp; queue[S][0] == L))
 			</formula>
-			<comment>4-TER
-			</comment>
-		</query>
-		<query>
-			<formula>A[] not deadlock
-			</formula>
-			<comment>5
-			</comment>
-		</query>
-		<query>
-			<formula>A[] not((queue[E][0]==R&amp;&amp;queueIndex[E]&gt;0) || (queue[S][0]==U&amp;&amp;queueIndex[S]&gt;0) || (queue[W][0]==L&amp;&amp;queueIndex[W]&gt;0))
-			</formula>
-			<comment>
+			<comment>Safety property 4
 			</comment>
 		</query>
 	</queries>
