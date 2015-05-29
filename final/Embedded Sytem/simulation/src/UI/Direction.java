@@ -1,0 +1,5 @@
+package UI;
+
+public enum Direction {
+	UP, RIGHT, DOWN, LEFT
+}
