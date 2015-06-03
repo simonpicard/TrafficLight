@@ -121,30 +121,54 @@ control: A[] not (
 \end{frame} 
 
 \section{Simulation}
-\begin{frame}{Simulation 1}
+\begin{frame}{Simulator}
 
-\begin{block}{Idée de base}
+\begin{block}{Base idea}
 \begin{itemize}
-\item Illustrer les interactions contrôleur-environnement
-\item L'environnement se comporte aléatoirement 
-\item Le contrôleur évite les mauvais états en implémentant la stratégie gagnante 
+\item Illustrate controller-environment interactions 
+\item Environment behaves randomly
+\item Controller avoids the bad states by implementing a winning strategy
 \end{itemize}
 \end{block}
 
-\begin{block}{Problème}
+\begin{block}{Problems}
 
 \begin{itemize}
-\item La stratégie gagnante est énorme ! 
-\item Elle spécifie une transition pour chaque état possible du système. 
+\item The winning strategy is huge ! 
+\item It specifies a transition of the controller from each system state. 
+\item Generate an execution trace from Uppaal tiga does not work (software problem)
 \end{itemize}
 
 \end{block}
 
-\begin{block}{Solution 1}
-Exporter et implémenter une trace d'Uppaal Tiga
+\end{frame}
 
+\begin{frame}{Simulator}
+
+\begin{block}{Solution }
+\begin{itemize}
+\item Define a controller following a winning strategy in Uppaal (not tiga)
+\item Then generate a trace of the whole system. 
+\item Finally, convert this trace via the Libutap library (readable)
+\end{itemize}
+\end{block}
+
+\begin{block}{GUI}
+\begin{itemize}
+\item Cars (bleu arrow), car lights (red arrow)
+\item Pedestrians (yellow arrow), pedestrian light (green arrow)
+\end{itemize}
 
 \end{block}
+
+
+
+\end{frame}
+
+\begin{frame}{Simulator}
+
+\centering
+\includegraphics[scale=0.8]{images/SimP.png}
 
 \end{frame}
 
