@@ -1,8 +1,0 @@
-\frametitle{Condition de succès}
-\begin{block}{Condition finale}
-\begin{verbatim}
-control: A[] not (
-    form_1 || form_2 || form_4 ||form_4
-)
-\end{verbatim}
-\end{block}
