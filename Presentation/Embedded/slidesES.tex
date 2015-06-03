@@ -34,6 +34,15 @@ Université Libre de Burxelles \\ % Your institution for the title page
 
 \section{Condition de succès}
 \begin{frame}[fragile]{Condition de succès}
+\begin{alertblock}{}
+Sureté pure : le controleur \textbf{doit} éviter les état de perte.
+\begin{verbatim}
+control : A[] not(lose)
+\end{verbatim}
+\end{alertblock}
+
+
+
 \begin{block}{1. Un piéton ne se fait pas écraser}
 \begin{verbatim}
 form_1 = 
@@ -109,7 +118,7 @@ control: A[] not (CarGeneratorEast.Broken ||
 \begin{block}{Condition finale}
 \begin{verbatim}
 control: A[] not (
-    form_1 || form_2 || form_4 ||form_4
+    form_1 || form_2 || form_3 ||form_4
 )
 \end{verbatim}
 \end{block}
