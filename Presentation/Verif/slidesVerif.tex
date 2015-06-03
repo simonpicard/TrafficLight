@@ -326,9 +326,48 @@ Université Libre de Burxelles \\ % Your institution for the title page
 
 \end{frame}
 
-\subsection{Controller}
-\begin{frame}{Controller}
+\subsection{Controller / Strategy}
+\begin{frame}{Strategy - description}
+The strategy is composed of two automatons :
+\begin{enumerate}
+\item <1-> Timer automaton
+\item <2-> Light controller automaton
+\end{enumerate}
+\end{frame}
 
+\begin{frame}{Timer automaton}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/Timer.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Light controller automaton - overview}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.1]{images/light_controller_overview.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Light controller automaton - urgent strategy}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/light_controller_urgent_strategy.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Light controller automaton - regular strategy}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.18]{images/light_controller_regular_strategy.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Light controller automaton - monitoring}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/light_controller_monitor.png}
+\end{figure}
 \end{frame}
 
 \section{Model checking}
