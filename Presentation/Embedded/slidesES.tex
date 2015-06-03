@@ -68,8 +68,86 @@ Université Libre de Burxelles \\ % Your institution for the title page
 \end{frame}
 
 \section{Condition de succès}
-\begin{frame}{Condition de succès}
+\begin{frame}[fragile]{Condition de succès}
+\begin{block}{1. Un piéton ne se fait pas écraser}
+\begin{verbatim}
+form_1 = 
+control: A[] not(PedestrianGeneratorEast.Cross && 
+(
+    CarGeneratorEast.Go || 
+    (
+        CarGeneratorWest.Go && queue[W][0] == U
+    ) || (
+        CarGeneratorSouth.Go && queue[S][0] == R
+    )))
+\end{verbatim}
+\end{block}
 
+\end{frame}
+\begin{frame}[fragile]{Condition de succès}
+\centering
+\includegraphics[scale=0.8]{images/pietonCollision.png}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Condition de succès}
+\begin{block}{2. Il n'y a pas de collision entre les voitures}
+\begin{verbatim}
+form_2 = 
+Control: A[] not
+(
+    CarGeneratorWest.Go && queue[W][0] == U && 
+    ((
+        CarGeneratorEast.Go && queue[E][0] == L
+    ) || (
+        CarGeneratorSouth.Go && 
+        ( queue[S][0] == L || queue[S][0] == R )
+    ))
+) || (
+    CarGeneratorWest.Go && queue[W][0] == R 
+    && CarGeneratorEast.Go && queue[E][0] == L
+)
+\end{verbatim}
+\end{block}
+
+\end{frame}
+\begin{frame}[fragile]{Condition de succès}
+\centering
+\includegraphics[scale=0.8]{images/exempleCollision.png}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Condition de succès}
+\begin{block}{3. Un piéton n'attend pas infiniment}
+\begin{verbatim}
+form_3 = 
+
+control: A[] not (PedestrianGeneratorEast.Broken)
+\end{verbatim}
+\end{block}
+
+\begin{block}{4. Une voiture n'attend pas infiniment}
+\begin{verbatim}
+form_4 = 
+
+control: A[] not (CarGeneratorEast.Broken ||
+                  CarGeneratorSouth.Broken ||
+                  CarGeneratorWest.Broken)
+\end{verbatim}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{Condition de succès}
+\begin{block}{Condition finale}
+\begin{verbatim}
+control: A[] not (
+    form_1 || form_2 || form_4 ||form_4
+)
+\end{verbatim}
+\end{block}
 \end{frame}
 
 \section{Simuation}
