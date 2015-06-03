@@ -8,7 +8,7 @@
 \author[]{Jamal \textsc{Ben Azouze}, Marien \textsc{Bourguignon}, Nicolas \textsc{De Groote}, \\Simon \textsc{Picard}, Arnaud \textsc{Rosette}, Gabriel \textsc{Ekanga}}
 \institute[ULB] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
-Université Libre de Burxelles \\ % Your institution for the title page
+Université Libre de Bruxelles \\ % Your institution for the title page
 \medskip
 \textit{Département d'Informatique} % Your email address
 }
@@ -152,10 +152,58 @@ control: A[] not (
 \end{block}
 \end{frame} 
 
-\section{Simuation}
-\begin{frame}{Simuation}
+\section{Simulation}
+\begin{frame}{Simulator}
+
+\begin{block}{Base idea}
+\begin{itemize}
+\item Illustrate controller-environment interactions 
+\item Environment behaves randomly
+\item Controller avoids the bad states by implementing a winning strategy
+\end{itemize}
+\end{block}
+
+\begin{block}{Problems}
+
+\begin{itemize}
+\item The winning strategy is huge ! 
+\item It specifies a transition of the controller from each system state. 
+\item Generate an execution trace from Uppaal tiga does not work (software problem)
+\end{itemize}
+
+\end{block}
 
 \end{frame}
+
+\begin{frame}{Simulator}
+
+\begin{block}{Solution }
+\begin{itemize}
+\item Define a controller following a winning strategy in Uppaal (not tiga)
+\item Then generate a trace of the whole system. 
+\item Finally, convert this trace via the Libutap library (readable)
+\end{itemize}
+\end{block}
+
+\begin{block}{GUI}
+\begin{itemize}
+\item Cars (bleu arrow), car lights (red arrow)
+\item Pedestrians (yellow arrow), pedestrian light (green arrow)
+\end{itemize}
+
+\end{block}
+
+
+
+\end{frame}
+
+\begin{frame}{Simulator}
+
+\centering
+\includegraphics[scale=0.8]{images/SimP.png}
+
+\end{frame}
+
 
 \section{Conclusion}
 \begin{frame}{Conclusion}
