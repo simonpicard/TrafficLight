@@ -63,14 +63,270 @@ Université Libre de Burxelles \\ % Your institution for the title page
 \begin{frame}{Uppaal}
 \end{frame}
 
-\section{Actors and automatons}
-\subsection{Actors from the environnement}
-\begin{frame}{bla}
+\section{Modeling}
+
+\subsection{Goal}
+
+\begin{frame}{Goal}
+
+
+\begin{itemize}
+
+\item Important part of the project
+
+\item Expresses the real world thanks to automatons
+
+\\* $\longrightarrow$ will allow to verify the properties
+
+\item Compromises to make between :
+
+\\* - a model with a lot of details which is close to the reality but might be too complex to understand and verify
+
+\\* - a more simple model that would not reflect the reality precisely
+
+\item Importance of identification of the actors
+
+\item Here, we have 3 actors
+
+\\* - Traffic lights
+
+\\* - Pedestrians
+
+\\* - Cars
+
+\end{itemize}
+
 
 \end{frame}
 
-\subsection{Automatons from the environnement}
-\begin{frame}{bla}
+
+\subsection{Actors (1) : Traffic lights}
+
+\begin{frame}{Actors (1) : Traffic lights }
+
+
+\textbf{1) Traffic lights : }
+
+
+\begin{itemize}
+
+\item They are the main actors in this project
+
+\item They give the authorization to cars and pedestrians to cross the roads at given instants
+
+\item Their role is to schedule the events
+
+\item We assume only that they have only two possible stats (green and red)
+
+\\* $\longrightarrow$ reduces the complexity of the system
+
+\item Orange state is useless
+
+\end{itemize}
+
+
+\end{frame}
+
+
+\subsection{Actors (2) : Pedestrians }
+
+\begin{frame}{Actors (2) : Pedestrians }
+
+
+\textbf{2) Pedestrians : }
+
+
+\begin{itemize}
+
+\item They come to a traffic light
+
+\item They can push a button
+
+\item wait that the corresponding traffic light passes from red to green in order to cross the road
+
+\item When the traffic light is green, they have a fixed time to cross the road
+
+\end{itemize}
+
+
+\end{frame}
+
+
+\subsection{Actors (3) : Cars }
+
+\begin{frame}{Actors (3) : Cars }
+
+
+\textbf{3) Cars : }
+
+
+\begin{itemize}
+
+\item They come to a traffic light
+
+\item They wait until they are allowed to enter the crossroad
+
+\item There are several scenarios for them
+
+\item When their traffic light is green, each car can follow different directions
+
+\item We assume that the cars respect the highway code
+
+\end{itemize}
+
+
+\end{frame}
+
+
+\subsection{Timed automatons}
+
+\begin{frame}{Timed automatons}
+
+
+\textbf{Timed automatons : }
+
+\begin{itemize}
+
+\item Used to formally model the system
+
+\item Some of them are part of the environment, the others are part of the controller
+
+\end{itemize}
+
+
+\textbf{Environment : }
+
+\begin{itemize}
+
+\item Composed of automatons which are not controllable by the system
+
+\item The pedestrians and the cars are unpredictable and uncontrollable
+
+\\* $\longrightarrow$ they belong to the environment
+
+\item Here we have :
+
+\\* - three generators for the cars (one per direction)
+
+\\* - one generator for the pedestrians
+
+\end{itemize}
+
+
+\end{frame}
+
+
+\subsection{Automatons of the environment (1) : Pedestrian generator (1/2) }
+
+\begin{frame}{Automatons of the environment (1) : Pedestrian generator (1/2)}
+
+
+\textbf{Pedestrian generator : }
+
+\newline
+
+\newline
+
+
+\includegraphics[scale=0.20]{images/imagePedestrianGenerator.jpg}
+
+
+
+\end{frame}
+
+
+\subsection{Automatons of the environment (1) : Pedestrian generator (2/2)}
+
+\begin{frame}{Automatons of the environment (1) : Pedestrian generator (2/2)}
+
+
+\textbf{Description : }
+
+
+\begin{itemize}
+
+\item Empty state : initial state, no pedestrian requesting to cross the crosswalk
+
+\item PushButton state : once a pedestrian pushes on the button, stay in this state until the traffic light turns to green
+
+\item LightGreen state : when the light turns to green, the pedestrians cross the road during an undetermined time which is less than a fixed time
+
+\item Cross state : stay in this state during exactly a time equals to the fixed crossing time of the pedestrians before returning the initial state
+
+\end{itemize}
+
+
+\textbf{Remarks : }
+
+
+\begin{itemize}
+
+\item In the PushButton state, it cannot receive other requests from other pedestrians because we consider pedestrians as a group of pedestrians and they cross the road in the same time unlike cars
+
+\item There is only one pedestrians generator for the two sides of the crosswalk because the color of the traffic light is the same in the two directions
+
+\item The generator can only generate a fixed number of pedestrian request to reduce the number of the states for the model checking
+
+\end{itemize}
+
+
+\end{frame}
+
+
+\subsection{Automatons of the environment (2) : Car generator (1/2)}
+
+\begin{frame}{Automatons of the environment (2) : Car generator (1/2)}
+
+
+\textbf{Car generator : }
+
+\newline
+
+\newline
+
+
+\includegraphics[scale=0.20]{images/imageCarGenerator.jpg}
+
+
+
+\end{frame}
+
+
+\subsection{Automatons of the environment (2) : Car generator (2/2)}
+
+\begin{frame}{Automatons of the environment (2) : Car generator (2/2)}
+
+
+
+\textbf{Description : }
+
+
+\begin{itemize}
+
+\item AcceptCar state: initial state, no cars waiting to cross the crossroad, a car can arrive at any moment if the queue is not full.
+
+\item LightGreen state : once the light becomes green, the first can enter the crossroad
+
+\item CarCrossing state : the cars in the queue continue to cross one by one until the light changes
+
+\item TakeDecision state : returns to the initial state if the light changed to red or the queue is empty, continue to cross if the light is still green and the queue is not empty
+
+\end{itemize}
+
+
+\textbf{Remarks : }
+
+
+\begin{itemize}
+
+\item There is three car generators, one for each road
+
+\item Each car generator has a queue storing cars waiting to cross the crossroad, because it has to distinguish each car waiting; unlike the pedestrian generator, the cars do not cross together at the same time
+
+\item the size of the queue equals to two because the time to check properties is too important with more than two locations in the queue and the model is too simple with less locations
+
+\end{itemize}
+
 
 \end{frame}
 
