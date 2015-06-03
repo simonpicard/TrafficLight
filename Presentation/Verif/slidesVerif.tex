@@ -4,7 +4,7 @@
 
 \title[INFO-F-412 - Traffic Light Control]{\textbf{Traffic Light Control} \\INFO-F-412 -- Formal Verification} % The short title appears at the bottom of every slide, the full title is only on the title page
 
-\author{Jamal \textsc{Ben Azouze}, Marien \textsc{Bourguignon}, Nicolas \textsc{De Groote}, \\Simon \textsc{Picard}, Arnaud \textsc{Rosette}, Gabriel \textsc{Ekanga}}
+\author[]{Jamal \textsc{Ben Azouze}, Marien \textsc{Bourguignon}, Nicolas \textsc{De Groote}, \\Simon \textsc{Picard}, Arnaud \textsc{Rosette}, Gabriel \textsc{Ekanga}}
 \institute[ULB] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
 Université Libre de Burxelles \\ % Your institution for the title page
@@ -98,7 +98,7 @@ A[] not
 (PedestrianGeneratorEast.Cross &&
     (CarGeneratorEast.CarCrossing ||
         CarGeneratorWest.CarCrossing && queue[W][0] == U ||
-        CarGeneratorSouth.CarCrossing && queue[S][0]==R
+        CarGeneratorSouth.CarCrossing && queue[S][0] == R
     )
 )
 \end{verbatim}
