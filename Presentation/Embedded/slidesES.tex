@@ -32,10 +32,10 @@ Université Libre de Burxelles \\ % Your institution for the title page
 
 \end{frame}
 
-\section{Condition de succès}
-\begin{frame}[fragile]{Condition de succès}
+\section{Winning condition}
+\begin{frame}[fragile]{Winning condition}
 \begin{alertblock}{}
-Sureté pure : le controleur \textbf{doit} éviter les état de perte.
+Pure safety : the controler \textbf{must} avoid the losing states.
 \begin{verbatim}
 control : A[] not(lose)
 \end{verbatim}
@@ -43,7 +43,7 @@ control : A[] not(lose)
 
 
 
-\begin{block}{1. Un piéton ne se fait pas écraser}
+\begin{block}{1. A pedestrian is never knocked down}
 \begin{verbatim}
 form_1 = 
 control: A[] not(PedestrianGeneratorEast.Cross && 
@@ -58,15 +58,15 @@ control: A[] not(PedestrianGeneratorEast.Cross &&
 \end{block}
 
 \end{frame}
-\begin{frame}[fragile]{Condition de succès}
+\begin{frame}[fragile]{Winning condition}
 \centering
 \includegraphics[scale=0.8]{images/pietonCollision.png}
 
 \end{frame}
 
 
-\begin{frame}[fragile]{Condition de succès}
-\begin{block}{2. Il n'y a pas de collision entre les voitures}
+\begin{frame}[fragile]{Winning condition}
+\begin{block}{2. Cars should never collide}
 \begin{verbatim}
 form_2 = 
 Control: A[] not
@@ -86,36 +86,30 @@ Control: A[] not
 \end{block}
 
 \end{frame}
-\begin{frame}[fragile]{Condition de succès}
+\begin{frame}[fragile]{Winning condition}
 \centering
 \includegraphics[scale=0.8]{images/exempleCollision.png}
 
 \end{frame}
 
 
-\begin{frame}[fragile]{Condition de succès}
-\begin{block}{3. Un piéton n'attend pas infiniment}
+\begin{frame}[fragile]{Winning condition}
+\begin{block}{3. Pedestrians do not wait infinitely}
 \begin{verbatim}
 form_3 = 
-
 control: A[] not (PedestrianGeneratorEast.Broken)
 \end{verbatim}
 \end{block}
 
-\begin{block}{4. Une voiture n'attend pas infiniment}
+\begin{block}{4. Cars do not wait infinitely}
 \begin{verbatim}
 form_4 = 
-
 control: A[] not (CarGeneratorEast.Broken ||
                   CarGeneratorSouth.Broken ||
                   CarGeneratorWest.Broken)
 \end{verbatim}
 \end{block}
-
-\end{frame}
-
-\begin{frame}[fragile]{Condition de succès}
-\begin{block}{Condition finale}
+\begin{block}{Full condition}
 \begin{verbatim}
 control: A[] not (
     form_1 || form_2 || form_3 ||form_4
