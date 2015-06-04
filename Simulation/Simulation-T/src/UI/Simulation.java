@@ -49,7 +49,7 @@ public class Simulation extends BasicGame {
 		this.container = container;
 		background = new Image("images/roadT.png");
 		cr = new CrossRoad();
-		setSpeed(5);
+		setSpeed(2);
 
 	}
 
@@ -101,6 +101,7 @@ public class Simulation extends BasicGame {
 	}
 
 	private void doActions() throws SlickException {
+		System.out.println(actions.get(current));
 		for (Action a : actions.get(current))
 			doAction(a);
 		current++;

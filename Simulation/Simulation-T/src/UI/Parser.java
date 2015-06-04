@@ -22,10 +22,16 @@ public class Parser {
 	private ArrayList<Action> current = new ArrayList<Action>();
 	private ArrayList<Action> next = new ArrayList<Action>();
 	
-	public Parser(String pathIn, String pathOut){
+	public Parser(){
+	}
+	
+	public void addAction(String pathIn, String pathOut){
+		current = new ArrayList<Action>();
+		next = new ArrayList<Action>();
 		replaceRegex(pathIn, pathOut);
 		parseFile(pathOut);
-		actions.add(next);
+		nextAction();
+		nextAction();
 	}
 
 	
