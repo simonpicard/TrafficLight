@@ -1,0 +1,6 @@
+\beamer@endinputifotherversion {3.36pt}
+\select@language {french}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Modelisation}{6}{0}{2}
+\beamer@sectionintoc {3}{Simulator}{16}{0}{3}
+\beamer@sectionintoc {4}{Verifier}{18}{0}{4}
